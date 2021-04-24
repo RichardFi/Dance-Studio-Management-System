@@ -1,6 +1,5 @@
-import { useEffect, useState } from "react";
 
-export const SearchPanel = ({users, param, setParam}) => {
+export const SearchPanel = ({users,param, setParam}) => {
 
     //setParam(Object.assign({}, param, ))
     return <form action="">
@@ -11,11 +10,11 @@ export const SearchPanel = ({users, param, setParam}) => {
             })} />
             <select value={param.personId} onChange={evt => setParam({
                 ...param,
-                userId: evt.target.value
+                personId: evt.target.value
             })}>
                 <option value={''}>Person</option>
                 {
-                    users.map(user => <option value={user.id}>{user.name}</option>)
+                    users.map(user => <option key={user.id} value={user.id}>{user.name}</option>)
                 }
             </select>
         </div>
