@@ -1,11 +1,6 @@
-import {useState} from "react";
+import { useEffect, useState } from "react";
 
-export const SearchPanel = () => {
-    const [param, setParam] = useState({
-        name: '',
-        userId: ''
-    })
-    const [users,setUsers] = useState([]);
+export const SearchPanel = ({users, param, setParam}) => {
 
     //setParam(Object.assign({}, param, ))
     return <form action="">
