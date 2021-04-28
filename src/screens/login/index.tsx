@@ -2,7 +2,7 @@ import React, { FormEvent } from 'react';
 const apiUrl = process.env.REACT_APP_API_URL;
 
 export const LoginScreen = () => {
-    const login = (param: { username: string, password: string }) => {
+    const login = (param: { email: string, password: string }) => {
         fetch(`${apiUrl}/auth`, {
             method: 'POST',
             headers: {
@@ -14,14 +14,14 @@ export const LoginScreen = () => {
     const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
         //prevent the default action of submit
         event.preventDefault();
-        const username = (event.currentTarget.elements[0] as HTMLFormElement).value;
+        const email = (event.currentTarget.elements[0] as HTMLFormElement).value;
         const password = (event.currentTarget.elements[1] as HTMLFormElement).value;
-        login({ username, password });
+        login({ email, password });
     }
     return <form onSubmit={handleSubmit}>
         <div>
-            <label htmlFor="username"> Username </label>
-            <input type="text" id={'username'} />
+            <label htmlFor="email"> email </label>
+            <input type="text" id={'email'} />
         </div>
         <div>
             <label htmlFor="password"> Password </label>
