@@ -5,45 +5,50 @@ const apiUrl = process.env.REACT_APP_API_URL;
 
 export const getToken = () => window.localStorage.getItem(localStorageKey);
 
-export const handleUserResponse = ({ user }: { user: User }) => {
-    window.localStorage.setItem(localStorageKey, user.token || '')
+export const handleUserResponse = (user: User) => {
+    window.localStorage.setItem(localStorageKey, user.token || "");
     return user;
-}
+};
+
 
 export const login = (data: { email: string, password: string }) => {
-    fetch(`${apiUrl}/auth`, {
+    return fetch(`${apiUrl}/auth`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
         },
         body: JSON.stringify(data)
-    }).then(async (response: Response) =>{
-        if (response.ok){
-            return handleUserResponse(await response.json())
+    }).then(async (response: Response) => {
+        if (response.ok) {
+            return handleUserResponse(await response.json());
+        } else {
+            return Promise.reject(data);
         }
     })
 }
 
-export const register = (data: 
-    { 
+export const register = (data:
+    {
         firstName: string,
         lastName: string,
         gender: string,
-        phone:  string,
-        email: string, 
-        password: string 
+        phone: string,
+        email: string,
+        password: string
     }) => {
-    fetch(`${apiUrl}/users`, {
+    return fetch(`${apiUrl}/users`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
         },
         body: JSON.stringify(data)
-    }).then(async (response: Response) =>{
-        if (response.ok){
+    }).then(async (response: Response) => {
+        if (response.ok) {
             return handleUserResponse(await response.json())
+        } else {
+            return Promise.reject(data);
         }
     })
 }
 
-export const logout = () => window.localStorage.removeItem(localStorageKey);
+export const logout = async () => window.localStorage.removeItem(localStorageKey);
