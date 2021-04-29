@@ -1,19 +1,20 @@
 import React from "react";
 
 export interface User {
-    id: string;
-    name:string;
+    _id: string;
+    firstName: string;
+    lastName: string;
+    gender: string;
+    phone: string;
     email: string;
-    title: string;
-    organization: string;
     role: string;
     token: string
 }
 interface SearchPanelProps {
     users: User[],
     param: {
-        name: string;
-        personId: string
+        _id: string;
+        name: string
     },
     setParam: (param: SearchPanelProps['param']) => void;
 }
@@ -26,13 +27,13 @@ export const SearchPanel = ({ users, param, setParam }: SearchPanelProps) => {
                 ...param,
                 name: evt.target.value
             })} />
-            <select value={param.personId} onChange={evt => setParam({
+            <select value={param._id} onChange={evt => setParam({
                 ...param,
-                personId: evt.target.value
+                _id: evt.target.value
             })}>
                 <option value={''}>Person</option>
                 {
-                    users.map(user => <option key={user.id} value={user.id}>{user.name}</option>)
+                    users.map(user => <option key={user.email} value={user.email}>{user.firstName}</option>)
                 }
             </select>
         </div>

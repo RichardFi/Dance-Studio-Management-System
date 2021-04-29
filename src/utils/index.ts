@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 
 export const isFalsy = (value: any) => value === 0 ? false : !value
 
+// clean null values in an object
 export const cleanObject = (object: object) => {
     const result = { ...object };
     Object.keys(result).forEach(key => {

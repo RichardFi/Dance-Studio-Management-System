@@ -1,5 +1,7 @@
 import qs from 'qs';
 import * as auth from 'auth-provider';
+import { useAuth } from 'context/auth-context';
+import { config } from 'node:process';
 
 const apiUrl = process.env.REACT_APP_API_URL;
 interface Config extends RequestInit {
@@ -7,7 +9,7 @@ interface Config extends RequestInit {
     data?: object
 };
 
-export const http = async (endpoint: string, {data, token, headers, ...customConfig}:Config) => {
+export const http = async (endpoint: string, { data, token, headers, ...customConfig }: Config = {}) => {
     const config = {
         method: 'GET',
         headers: {
@@ -16,23 +18,28 @@ export const http = async (endpoint: string, {data, token, headers, ...customCon
         },
         ...customConfig
     };
-    if (config.method.toUpperCase() === 'GET'){
+    if (config.method.toUpperCase() === 'GET') {
         endpoint += `?${qs.stringify(data)}`;
-    } else{
+    } else {
         config.body = JSON.stringify(data || {});
     }
-    return window.fetch(`${apiUrl}/${endpoint}`,{})
-    .then(async response =>{
-        if (response.status === 401){
-            await auth.logout();
-            window.location.reload();
-            return Promise.reject({message: 'Please login again'});
-        }
-        const data = await response.json();
-        if (response.ok){
-            return data;
-        }else{
-            return Promise.reject(data);
-        }
-    })
+    return window.fetch(`${apiUrl}/${endpoint}`, config)
+        .then(async response => {
+            if (response.status === 401) {
+                await auth.logout();
+                //window.location.reload();
+                return Promise.reject({ message: 'Please login again' });
+            }
+            const data = await response.json();
+            if (response.ok) {
+                return data;
+            } else {
+                return Promise.reject(data);
+            }
+        })
+}
+
+export const useHttp = () => {
+    const { user } = useAuth();
+    return (...[endpoint, config]: Parameters<typeof http>) => http(endpoint, { ...config, token: user?.token })
 }

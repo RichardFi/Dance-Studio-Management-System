@@ -1,15 +1,18 @@
 import React from 'react';
 import { User } from "screens/projectList/searchPanel";
 
-interface Project {
-    id: string;
+interface DanceClass {
+    _id: string;
+    users: [string];
     name: string;
-    personId: string;
-    pin: boolean;
-    organization: string;
+    course: string;
+    startTime: boolean;
+    endTime: string;
+    description: string;
+    teacher: string
 }
 interface ListProps {
-    list: Project[],
+    list: DanceClass[],
     users: User[]
 }
 
@@ -17,17 +20,19 @@ export const List = ({ list, users }: ListProps) => {
     return <table>
         <thead>
             <tr>
-                <th>project</th>
+                <th>class</th>
                 <th>person</th>
             </tr>
         </thead>
         <tbody>
+            {console.log('list',list)}
+            {console.log('users',users)}
             {
-                list.map(project => <tr key={project.id}>
-                    <td>{project.name}</td>
-                    <td>{users.find(user => user.id === project.personId)?.name || "unknown"}</td>
-
-                </tr>)
+                list.map(danceClass => 
+                    <tr key={danceClass._id}>
+                        <td>{danceClass.name}</td>
+                        {danceClass && users ? <td>{users.find(user => user._id === danceClass.users[0])?.firstName || "unknown"}</td> : <td /> }  
+                    </tr>)
             }
         </tbody>
     </table>
