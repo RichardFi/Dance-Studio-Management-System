@@ -25,8 +25,6 @@ export const List = ({ list, users }: ListProps) => {
             </tr>
         </thead>
         <tbody>
-            {console.log('list',list)}
-            {console.log('users',users)}
             {
                 list.map(danceClass => 
                     <tr key={danceClass._id}>
