@@ -16,8 +16,9 @@ const bootstrapUser = async () => {
     if (token) {
         const data = await http('auth', { token });
         user = data.user;
+        user.token = token;
     }
-    user.token = token;
+        
     return user;
 }
 

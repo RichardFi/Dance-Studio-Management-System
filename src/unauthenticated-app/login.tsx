@@ -1,30 +1,23 @@
 import { useAuth } from 'context/auth-context';
 import React, { FormEvent } from 'react';
+import { Form, Button, Input } from 'antd';
+
 //const apiUrl = process.env.REACT_APP_API_URL;
 
 export const LoginScreen = () => {
     const { login, user } = useAuth();
-    const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
-        //prevent the default action of submit
-        event.preventDefault();
-        const email = (event.currentTarget.elements[0] as HTMLFormElement).value;
-        const password = (event.currentTarget.elements[1] as HTMLFormElement).value;
-        login({ email, password });
+    const handleSubmit = (values: { email: string, password: string }) => {
+        login(values);
     }
-    return <form onSubmit={handleSubmit}>
-        {
-            user ? <div>
-                success : {user?.role}
-            </div> :null
-        }
-        <div>
-            <label htmlFor="email"> email </label>
-            <input type="text" id={'email'} />
-        </div>
-        <div>
-            <label htmlFor="password"> Password </label>
-            <input type="password" id={'password'} />
-        </div>
-        <button type="submit"> Login </button>
-    </form>
+    return <Form onFinish={handleSubmit}>
+        <Form.Item name={'email'} rules={[{ required: true, message: 'Please enter email' }]}>
+            <Input placeholder={'email'} type="text" id={'email'} />
+        </Form.Item>
+        <Form.Item name={'password'} rules={[{ required: true, message: 'Please enter email' }]}>
+            <Input placeholder={'password'} type="password" id={'password'} />
+        </Form.Item>
+        <Form.Item>
+            <Button htmlType={'submit'} type="primary"> Login </Button>
+        </Form.Item>
+    </Form>
 }
