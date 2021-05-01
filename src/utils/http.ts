@@ -1,7 +1,7 @@
 import qs from 'qs';
 import * as auth from 'auth-provider';
 import { useAuth } from 'context/auth-context';
-import { config } from 'node:process';
+//import { config } from 'node:process';
 
 const apiUrl = process.env.REACT_APP_API_URL;
 interface Config extends RequestInit {
@@ -27,8 +27,8 @@ export const http = async (endpoint: string, { data, token, headers, ...customCo
     return window.fetch(`${apiUrl}/${endpoint}`, config)
         .then(async response => {
             if (response.status === 401) {
-                //await auth.logout();
-                //window.location.reload();
+                await auth.logout();
+                window.location.reload();
                 return Promise.reject(response.json());
             }
             const data = await response.json();
