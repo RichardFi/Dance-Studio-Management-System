@@ -34,7 +34,7 @@ export const SearchPanel = ({ users, param, setParam }: SearchPanelProps) => {
             })}>
                 <Select.Option value={''}>Person</Select.Option>
                 {
-                    users.map(user => <option key={user.email} value={user.email}>{user.firstName}</option>)
+                    users.map(user => <Select.Option key={user.email} value={user.email}>{user.firstName}</Select.Option>)
                 }
             </Select>
         </div>

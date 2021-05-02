@@ -26,7 +26,7 @@ export const List = ({ list, users }: ListProps) => {
             return <span>
                 {users.find(user => user._id === danceClass.users[0])?.firstName || "unknown"}
             </span>
-        }
+        },
     }
     ]} dataSource={list} />
 }
