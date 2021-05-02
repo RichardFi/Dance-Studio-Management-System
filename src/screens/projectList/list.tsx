@@ -1,6 +1,6 @@
 import React from 'react';
 import { User } from "screens/projectList/searchPanel";
-
+import { Table } from 'antd';
 interface DanceClass {
     _id: string;
     users: [string];
@@ -17,21 +17,16 @@ interface ListProps {
 }
 
 export const List = ({ list, users }: ListProps) => {
-    return <table>
-        <thead>
-            <tr>
-                <th>class</th>
-                <th>person</th>
-            </tr>
-        </thead>
-        <tbody>
-            {
-                list.map(danceClass => 
-                    <tr key={danceClass._id}>
-                        <td>{danceClass.name}</td>
-                        {danceClass && users ? <td>{users.find(user => user._id === danceClass.users[0])?.firstName || "unknown"}</td> : <td /> }  
-                    </tr>)
-            }
-        </tbody>
-    </table>
+    return <Table pagination={false} columns={[{
+        title: 'Class Name',
+        dataIndex: 'name',
+    },{
+        title: 'Person',
+        render(danceClass) {
+            return <span>
+                {users.find(user => user._id === danceClass.users[0])?.firstName || "unknown"}
+            </span>
+        }
+    }
+    ]} dataSource={list} />
 }
