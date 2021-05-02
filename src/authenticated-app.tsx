@@ -2,11 +2,11 @@ import React from 'react';
 import { ProjectListScreen } from 'screens/projectList';
 import { useAuth } from "context/auth-context";
 import styled from "@emotion/styled";
-import { Button } from 'antd';
-import {Row} from 'components/lib';
+import { Button, Dropdown, Menu } from 'antd';
+import { Row } from 'components/lib';
 
 export const AuthenticatedApp = () => {
-    const { logout } = useAuth();
+    const { logout, user } = useAuth();
 
     return <Container>
         <Header between={true}>
@@ -16,7 +16,16 @@ export const AuthenticatedApp = () => {
                 <h2>User</h2>
             </HeaderLeft>
             <HeaderRight>
-                <Button onClick={logout}>Logout</Button>
+                <Dropdown overlay={<Menu>
+                    <Menu.Item key={'logout'}>
+                        <a onClick={logout}>Logout</a>
+                    </Menu.Item>
+                </Menu>}>
+                    <a onClick={e => e.preventDefault()}>
+                        {console.log(user)}
+                        Hi, {user?._id}
+                    </a>
+                </Dropdown>
             </HeaderRight>
         </Header>
         <Main>
@@ -35,9 +44,11 @@ const Container = styled.div`
   height: 100vh;
 `;
 
-// grid-area 用来给grid子元素起名字
+// grid-area
 const Header = styled(Row)`
-
+padding: 3.2rem;
+box-shadow: 0 0 5px 0 rgba(0,0,0,0.1);
+z-index: 1;
 `;
 const HeaderLeft = styled(Row)``;
 const HeaderRight = styled.div``;

@@ -22,12 +22,14 @@ interface SearchPanelProps {
 export const SearchPanel = ({ users, param, setParam }: SearchPanelProps) => {
 
     //setParam(Object.assign({}, param, ))
-    return <Form action="">
-        <div>
-            <Input type="text" value={param.name} onChange={evt => setParam({
+    return <Form style={{ marginBottom: '2rem' }} layout={"inline"}>
+        <Form.Item>
+            <Input placeholder={'Class Name'} type="text" value={param.name} onChange={evt => setParam({
                 ...param,
                 name: evt.target.value
             })} />
+        </Form.Item>
+        <Form.Item>
             <Select value={param._id} onChange={value => setParam({
                 ...param,
                 _id: value
@@ -37,6 +39,6 @@ export const SearchPanel = ({ users, param, setParam }: SearchPanelProps) => {
                     users.map(user => <Select.Option key={user.email} value={user.email}>{user.firstName}</Select.Option>)
                 }
             </Select>
-        </div>
+        </Form.Item>
     </Form>
 }
