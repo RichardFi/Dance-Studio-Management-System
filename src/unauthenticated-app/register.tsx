@@ -1,7 +1,8 @@
 import { useAuth } from 'context/auth-context';
 import React, { FormEvent } from 'react';
 //const apiUrl = process.env.REACT_APP_API_URL;
-import { Form, Button, Input } from 'antd';
+import { Form, Input } from 'antd';
+import { LongButton } from 'unauthenticated-app';
 
 export const RegisterScreen = () => {
     const { register, user } = useAuth();
@@ -37,7 +38,7 @@ export const RegisterScreen = () => {
             <Input placeholder={'password'} type="password" id={'password'} />
         </Form.Item>
         <Form.Item>
-            <Button type="primary"> Register </Button>
+            <LongButton type="primary"> Register </LongButton>
         </Form.Item>
     </Form>
 }

@@ -1,7 +1,7 @@
 import React, { useState } from "react"
 import { RegisterScreen } from "unauthenticated-app/register";
 import { LoginScreen } from "unauthenticated-app/login";
-import { Card, Divider } from 'antd';
+import { Card, Divider,Button } from 'antd';
 import styled from '@emotion/styled';
 
 export const UnauthenticatedApp = () => {
@@ -22,6 +22,10 @@ export const UnauthenticatedApp = () => {
         </ShadowCard>
     </Container>
 }
+export const LongButton = styled(Button)`
+width:100%;
+`
+
 const Title = styled.h2`
 margin-bottom: 2.4rem;
 color: rgb(94,108,132);
@@ -35,7 +39,7 @@ width: 100%;
 const ShadowCard = styled(Card)`
 width: 40rem;
 min-height:56rem;
-padding: 3.2rem, 4rem;
+padding: 4rem 5rem;
 border-radius: 0.3rem;
 box-sizing: border-box;
 box-shadow: rgba(0,0,0,0.1) 0 0 10px;
