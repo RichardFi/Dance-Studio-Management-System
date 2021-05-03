@@ -7,6 +7,7 @@ import { LongButton } from 'unauthenticated-app';
 
 export const LoginScreen = () => {
     const { login, user } = useAuth();
+    console.log(user);
     const handleSubmit = (values: { email: string, password: string }) => {
         login(values);
     }
