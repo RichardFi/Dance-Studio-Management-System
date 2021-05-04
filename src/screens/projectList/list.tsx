@@ -1,8 +1,9 @@
 import React from 'react';
 import { User } from "screens/projectList/searchPanel";
-import { Table } from 'antd';
+import { Table, TableProps } from 'antd';
 import dayjs from 'dayjs';
-interface DanceClass {
+
+export interface DanceClass {
     _id: string;
     users: [string];
     name: string;
@@ -12,23 +13,24 @@ interface DanceClass {
     description: string;
     teacher: string
 }
-interface ListProps {
-    list: DanceClass[],
+
+interface ListProps extends TableProps<DanceClass>{
+    //list: DanceClass[],
     users: User[]
 }
 
-export const List = ({ list, users }: ListProps) => {
-    return <Table pagination={false} columns={[
+export const List = ({ users, ...props }: ListProps) => {
+    return <Table rowKey={"id"} pagination={false} columns={[
         {
             title: 'Class Name',
             dataIndex: 'name',
         },
         {
             title: 'Start Time',
-            render(value, danceClass){
-                return(
+            render(value, danceClass) {
+                return (
                     <span>
-                        {danceClass.startTime ?danceClass.startTime: undefined}
+                        {danceClass.startTime ? danceClass.startTime : undefined}
                     </span>
                 )
             }
@@ -45,5 +47,5 @@ export const List = ({ list, users }: ListProps) => {
                 </span>
             },
         }
-    ]} dataSource={list} />
+    ]} {...props} />
 }

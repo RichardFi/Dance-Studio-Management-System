@@ -5,7 +5,9 @@ import { useState, useEffect } from "react";
 import { cleanObject, useDebounce } from "../../utils";
 import { useHttp } from "utils/http";
 import styled from "@emotion/styled";
-
+import { useAsync } from "utils/useAsync";
+import { DanceClass } from "screens/projectList/list";
+import { Typography } from "antd";
 //import * as qs from "qs";
 
 //const apiUrl = process.env.REACT_APP_API_URL;
@@ -16,13 +18,15 @@ export const ProjectListScreen = () => {
         name: ''
     });/*  */
 
+
     const debouncedParam = useDebounce(param, 200)
     const [users, setUsers] = useState([]);
-    const [list, setList] = useState([]);
+    //const [list, setList] = useState([]);
     const client = useHttp();
+    const { run, isLoading, error, data:list } = useAsync<DanceClass[]>();
 
     useEffect(() => {
-        client('classes', { data: cleanObject(debouncedParam) }).then(setList);
+        run(client('classes', { data: cleanObject(debouncedParam) }));
         //console.log(qs.stringify(cleanObject(param)))
         /*         fetch(`${apiUrl}/projects?${qs.stringify(cleanObject(debouncedParam))}`)
                     .then(async response => {
@@ -45,7 +49,9 @@ export const ProjectListScreen = () => {
         <Container>
             <h1>Class List</h1>
             <SearchPanel users={users} param={param} setParam={setParam} />
-            <List users={users} list={list} />
+            {error ? <Typography.Text type={"danger"}>{error.message}</Typography.Text>: null }
+
+            <List loading={isLoading} users={users} dataSource={list || []} />
         </Container>
     </div>
 }
