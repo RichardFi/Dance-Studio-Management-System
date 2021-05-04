@@ -8,6 +8,8 @@ import styled from "@emotion/styled";
 import { useAsync } from "utils/useAsync";
 import { DanceClass } from "screens/projectList/list";
 import { Typography } from "antd";
+import { useDanceClass } from "utils/danceClass";
+
 //import * as qs from "qs";
 
 //const apiUrl = process.env.REACT_APP_API_URL;
@@ -23,27 +25,10 @@ export const ProjectListScreen = () => {
     const [users, setUsers] = useState([]);
     //const [list, setList] = useState([]);
     const client = useHttp();
-    const { run, isLoading, error, data:list } = useAsync<DanceClass[]>();
-
-    useEffect(() => {
-        run(client('classes', { data: cleanObject(debouncedParam) }));
-        //console.log(qs.stringify(cleanObject(param)))
-        /*         fetch(`${apiUrl}/projects?${qs.stringify(cleanObject(debouncedParam))}`)
-                    .then(async response => {
-                        if (response.ok) {
-                            setList(await response.json())
-                        }
-                    }) */
-    }, [debouncedParam])
+    const { isLoading, error, data:list } = useDanceClass(debouncedParam);
 
     useEffect(() => {
         client('users').then(setUsers);
-        /*         fetch(`${apiUrl}/users`)
-                    .then(async response => {
-                        if (response.ok) {
-                            setUsers(await response.json())
-                        }
-                    }) */
     }, [param])
     return <div>
         <Container>

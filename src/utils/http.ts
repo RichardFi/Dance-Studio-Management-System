@@ -23,7 +23,6 @@ export const http = async (endpoint: string, { data, token, headers, ...customCo
     } else {
         config.body = JSON.stringify(data || {});
     }
-    console.log(config)
     return window.fetch(`${apiUrl}/${endpoint}`, config)
         .then(async response => {
             if (response.status === 401) {
