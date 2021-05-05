@@ -13,6 +13,7 @@ export const UnauthenticatedApp = () => {
         <ShadowCard>
             <Title>
                 {isRegister ? 'Register to Zero One' : 'Login to Zero One'}
+                {console.log(error)}
             </Title>
             {error ? <Typography.Text type={"danger"}>{error.message}</Typography.Text> : null}
             {
@@ -40,7 +41,7 @@ width: 100%;
 `
 
 const ShadowCard = styled(Card)`
-width: 40rem;
+width: 45rem;
 min-height:56rem;
 padding: 4rem 5rem;
 border-radius: 0.3rem;

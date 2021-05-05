@@ -4,11 +4,13 @@ import React, { FormEvent } from 'react';
 import { Form, Input } from 'antd';
 import { LongButton } from 'unauthenticated-app';
 
-export const RegisterScreen = ({onError}: {onError:(error:Error) => void}) => {
+export const RegisterScreen = ({ onError }: { onError: (error: Error) => void }) => {
     const { register, user } = useAuth();
-    const handleSubmit = (values: { firstName: string; lastName: string; gender: string; phone: string; email: string; password: string }) => {
-        //prevent the default action of submit
-        register(values);
+    const handleSubmit = ({cpassword, ...values} : { firstName: string; lastName: string; gender: string; phone: string; email: string; password: string, cpassword:string }) => {
+        if (cpassword !== values.password){
+            return onError(new Error('Password and confirm password does not match'))
+        }
+        register(values).catch(onError);
     }
     return <Form onFinish={handleSubmit}>
         <Form.Item name={'firstName'} rules={[{ required: true, message: 'Please enter firstName' }]}>
@@ -28,6 +30,9 @@ export const RegisterScreen = ({onError}: {onError:(error:Error) => void}) => {
         </Form.Item>
         <Form.Item name={'password'} rules={[{ required: true, message: 'Please enter password' }]}>
             <Input placeholder={'password'} type="password" id={'password'} />
+        </Form.Item>
+        <Form.Item name={'cpassword'} rules={[{ required: true, message: 'Please confirm password' }]}>
+            <Input placeholder={'confirm password'} type="password" id={'cpassword'} />
         </Form.Item>
         <Form.Item>
             <LongButton htmlType={'submit'} type="primary"> Register </LongButton>
