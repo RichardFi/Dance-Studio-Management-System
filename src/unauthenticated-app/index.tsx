@@ -1,19 +1,22 @@
 import React, { useState } from "react"
 import { RegisterScreen } from "unauthenticated-app/register";
 import { LoginScreen } from "unauthenticated-app/login";
-import { Card, Divider,Button } from 'antd';
+import { Card, Divider, Button, Typography } from 'antd';
 import styled from '@emotion/styled';
 
 export const UnauthenticatedApp = () => {
     const [isRegister, setIsRegister] = useState(false);
+    const [error, setError] = useState<Error | null>(null);
+
     return <Container>
         <Header />
         <ShadowCard>
             <Title>
-                {isRegister ? 'Register to Zero One':'Login to Zero One'}
+                {isRegister ? 'Register to Zero One' : 'Login to Zero One'}
             </Title>
+            {error ? <Typography.Text type={"danger"}>{error.message}</Typography.Text> : null}
             {
-                isRegister ? <RegisterScreen /> : <LoginScreen />
+                isRegister ? <RegisterScreen onError={setError} /> : <LoginScreen onError={setError} />
             }
             <Divider />
             <a onClick={() => setIsRegister(!isRegister)}>

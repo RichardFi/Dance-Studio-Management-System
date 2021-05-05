@@ -5,9 +5,9 @@ import { LongButton } from 'unauthenticated-app';
 
 //const apiUrl = process.env.REACT_APP_API_URL;
 
-export const LoginScreen = () => {
+export const LoginScreen = ({onError}: {onError:(error:Error) => void}) => {
     const { login, user } = useAuth();
-    console.log(user);
+    //console.log(user);
     const handleSubmit = (values: { email: string, password: string }) => {
         login(values);
     }

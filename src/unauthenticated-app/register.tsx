@@ -4,19 +4,11 @@ import React, { FormEvent } from 'react';
 import { Form, Input } from 'antd';
 import { LongButton } from 'unauthenticated-app';
 
-export const RegisterScreen = () => {
+export const RegisterScreen = ({onError}: {onError:(error:Error) => void}) => {
     const { register, user } = useAuth();
-    const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+    const handleSubmit = (values: { firstName: string; lastName: string; gender: string; phone: string; email: string; password: string }) => {
         //prevent the default action of submit
-        event.preventDefault();
-        const firstName = (event.currentTarget.elements[0] as HTMLFormElement).value;
-        const lastName = (event.currentTarget.elements[1] as HTMLFormElement).value;
-        const gender = (event.currentTarget.elements[2] as HTMLFormElement).value;
-        const phone = (event.currentTarget.elements[3] as HTMLFormElement).value;
-        const email = (event.currentTarget.elements[4] as HTMLFormElement).value;
-        const password = (event.currentTarget.elements[5] as HTMLFormElement).value;
-
-        register({ firstName, lastName, gender, phone, email, password });
+        register(values);
     }
     return <Form onFinish={handleSubmit}>
         <Form.Item name={'firstName'} rules={[{ required: true, message: 'Please enter firstName' }]}>
@@ -38,7 +30,7 @@ export const RegisterScreen = () => {
             <Input placeholder={'password'} type="password" id={'password'} />
         </Form.Item>
         <Form.Item>
-            <LongButton type="primary"> Register </LongButton>
+            <LongButton htmlType={'submit'} type="primary"> Register </LongButton>
         </Form.Item>
     </Form>
 }
