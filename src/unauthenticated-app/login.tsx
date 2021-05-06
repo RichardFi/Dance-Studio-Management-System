@@ -17,7 +17,7 @@ export const LoginScreen = ({ onError }: { onError: (error: Error) => void }) =>
         <Form.Item name={'email'} rules={[{ required: true, message: 'Please enter email' }]}>
             <Input placeholder={'email'} type="text" id={'email'} />
         </Form.Item>
-        <Form.Item name={'password'} rules={[{ required: true, message: 'Please enter email' }]}>
+        <Form.Item name={'password'} rules={[{ required: true, message: 'Please enter password' }]}>
             <Input placeholder={'password'} type="password" id={'password'} />
         </Form.Item>
         <Form.Item>
