@@ -9,6 +9,7 @@ import { useAsync } from "utils/useAsync";
 import { DanceClass } from "screens/projectList/list";
 import { Typography } from "antd";
 import { useDanceClass } from "utils/danceClass";
+import {Helmet} from "react-helmet";
 
 //import * as qs from "qs";
 
@@ -32,6 +33,9 @@ export const ProjectListScreen = () => {
     }, [param])
     return <div>
         <Container>
+        <Helmet>
+            <title>Class List - ZeroOne</title>
+        </Helmet>
             <h1>Class List</h1>
             <SearchPanel users={users} param={param} setParam={setParam} />
             {error ? <Typography.Text type={"danger"}>{error.message}</Typography.Text>: null }
