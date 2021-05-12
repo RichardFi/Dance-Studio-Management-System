@@ -5,12 +5,13 @@ import 'antd/dist/antd.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { AppProviders } from 'context';
+import {BrowserRouter as Router} from "react-router-dom";
 
 ReactDOM.render(
   <React.StrictMode>
-    <AppProviders>
-      <App />
-    </AppProviders>
+      <AppProviders>
+        <App />
+      </AppProviders>
   </React.StrictMode>,
   document.getElementById('root')
 );

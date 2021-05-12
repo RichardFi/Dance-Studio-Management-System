@@ -1,7 +1,8 @@
 import React from 'react';
-import { User } from "screens/projectList/searchPanel";
+import { User } from "screens/classList/searchPanel";
 import { Table, TableProps } from 'antd';
 import dayjs from 'dayjs';
+import { Link, BrowserRouter as Router} from 'react-router-dom';
 
 export interface DanceClass {
     _id: string;
@@ -14,7 +15,7 @@ export interface DanceClass {
     teacher: string
 }
 
-interface ListProps extends TableProps<DanceClass>{
+interface ListProps extends TableProps<DanceClass> {
     //list: DanceClass[],
     users: User[]
 }
@@ -24,6 +25,9 @@ export const List = ({ users, ...props }: ListProps) => {
         {
             title: 'Class Name',
             dataIndex: 'name',
+            render(value, danceClass) {
+                return <Link to={danceClass._id}>{danceClass.name}</Link>
+            }
         },
         {
             title: 'Start Time',

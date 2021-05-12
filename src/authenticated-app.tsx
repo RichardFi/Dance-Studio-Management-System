@@ -1,19 +1,23 @@
 import React from 'react';
-import { ProjectListScreen } from 'screens/projectList';
+import { ClassListScreen } from 'screens/classList';
+import { ClassScreen } from 'screens/class';
 import { useAuth } from "context/auth-context";
 import styled from "@emotion/styled";
 import { Button, Dropdown, Menu } from 'antd';
 import { Row } from 'components/lib';
-import { Navigate, Route, Routes } from "react-router-dom";
+import { Navigate, BrowserRouter as Router, Route, Routes } from "react-router-dom";
+
 export const AuthenticatedApp = () => {
 
     return <Container>
         <PageHeader />
         <Main>
-            <ProjectListScreen />
-            <Routes>
-                <Route path={'/classes'} element={<ProjectListScreen/>}/>
-            </Routes>
+            <Router>
+                <Routes>
+                    <Route path={'/classes'} element={<ClassListScreen />} />
+                    <Route path={'/classes/:classId/*'} element={<ClassScreen />} />
+                </Routes>
+            </Router>
         </Main>
     </Container>
 }

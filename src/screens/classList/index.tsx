@@ -6,7 +6,7 @@ import { cleanObject, useDebounce } from "../../utils";
 import { useHttp } from "utils/http";
 import styled from "@emotion/styled";
 import { useAsync } from "utils/useAsync";
-import { DanceClass } from "screens/projectList/list";
+import { DanceClass } from "screens/classList/list";
 import { Typography } from "antd";
 import { useDanceClass } from "utils/danceClass";
 import { Helmet } from "react-helmet";
@@ -15,7 +15,7 @@ import { Helmet } from "react-helmet";
 
 //const apiUrl = process.env.REACT_APP_API_URL;
 
-export const ProjectListScreen = () => {
+export const ClassListScreen = () => {
     const [param, setParam] = useState({
         _id: '',
         name: ''

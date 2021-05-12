@@ -1,4 +1,4 @@
-import { DanceClass } from "screens/projectList/list";
+import { DanceClass } from "screens/classList/list";
 import { useEffect } from "react";
 import { cleanObject } from "utils";
 import { useHttp } from "utils/http";

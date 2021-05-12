@@ -1,4 +1,4 @@
-import { User } from "screens/projectList/searchPanel";
+import { User } from "screens/classList/searchPanel";
 import { useEffect } from "react";
 import { cleanObject } from "utils";
 import { useHttp } from "utils/http";
