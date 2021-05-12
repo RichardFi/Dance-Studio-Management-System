@@ -4,39 +4,46 @@ import { useAuth } from "context/auth-context";
 import styled from "@emotion/styled";
 import { Button, Dropdown, Menu } from 'antd';
 import { Row } from 'components/lib';
-
+import { Navigate, Route, Routes } from "react-router-dom";
 export const AuthenticatedApp = () => {
-    const { logout, user } = useAuth();
 
     return <Container>
-        <Header between={true}>
-            <HeaderLeft gap={true}>
-                <h2>Logo</h2>
-                <h2>Class</h2>
-                <h2>User</h2>
-            </HeaderLeft>
-            <HeaderRight>
-                <Dropdown overlay={<Menu>
-                    <Menu.Item key={'logout'}>
-                        <a onClick={logout}>Logout</a>
-                    </Menu.Item>
-                </Menu>}>
-                    <a onClick={e => e.preventDefault()}>
-                        {console.log(user)}
-                        Hi, {user?._id}
-                    </a>
-                </Dropdown>
-            </HeaderRight>
-        </Header>
+        <PageHeader />
         <Main>
             <ProjectListScreen />
+            <Routes>
+                <Route path={'/classes'} element={<ProjectListScreen/>}/>
+            </Routes>
         </Main>
     </Container>
 }
 
-const PageHeader = styled.header`
+const PageHeader = () => {
+    const { logout, user } = useAuth();
+
+    return <Header between={true}>
+        <HeaderLeft gap={true}>
+            <h2>Logo</h2>
+            <h2>Class</h2>
+            <h2>User</h2>
+        </HeaderLeft>
+        <HeaderRight>
+            <Dropdown overlay={<Menu>
+                <Menu.Item key={'logout'}>
+                    <a onClick={logout}>Logout</a>
+                </Menu.Item>
+            </Menu>}>
+                <a onClick={e => e.preventDefault()}>
+                    {console.log(user)}
+                Hi, {user?._id}
+                </a>
+            </Dropdown>
+        </HeaderRight>
+    </Header>
+}
+/* const PageHeader = styled.header`
 height: 6rem;
-`
+` */
 
 const Container = styled.div`
   display: grid;

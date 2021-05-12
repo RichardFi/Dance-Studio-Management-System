@@ -9,7 +9,7 @@ import { useAsync } from "utils/useAsync";
 import { DanceClass } from "screens/projectList/list";
 import { Typography } from "antd";
 import { useDanceClass } from "utils/danceClass";
-import {Helmet} from "react-helmet";
+import { Helmet } from "react-helmet";
 
 //import * as qs from "qs";
 
@@ -26,19 +26,19 @@ export const ProjectListScreen = () => {
     const [users, setUsers] = useState([]);
     //const [list, setList] = useState([]);
     const client = useHttp();
-    const { isLoading, error, data:list } = useDanceClass(debouncedParam);
+    const { isLoading, error, data: list } = useDanceClass(debouncedParam);
 
     useEffect(() => {
         client('users').then(setUsers);
     }, [param])
     return <div>
         <Container>
-        <Helmet>
-            <title>Class List - ZeroOne</title>
-        </Helmet>
+            <Helmet>
+                <title>Class List - ZeroOne</title>
+            </Helmet>
             <h1>Class List</h1>
             <SearchPanel users={users} param={param} setParam={setParam} />
-            {error ? <Typography.Text type={"danger"}>{error.message}</Typography.Text>: null }
+            {error ? <Typography.Text type={"danger"}>{error.message}</Typography.Text> : null}
 
             <List loading={isLoading} users={users} dataSource={list || []} />
         </Container>
