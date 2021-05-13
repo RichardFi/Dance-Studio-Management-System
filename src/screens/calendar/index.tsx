@@ -26,7 +26,7 @@ export const CalendarScreen = () => {
 
     <FullCalendar
       plugins={[dayGridPlugin]}
-/*       events={event}
+/*  need to fix type    events={event}
  */    />
     )
     {console.log(event)}
