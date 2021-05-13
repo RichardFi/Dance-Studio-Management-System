@@ -31,6 +31,7 @@ export const ClassListScreen = () => {
     useEffect(() => {
         client('users').then(setUsers);
     }, [param])
+    
     return <div>
         <Container>
             <Helmet>

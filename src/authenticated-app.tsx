@@ -1,6 +1,6 @@
 import React from 'react';
 import { ClassListScreen } from 'screens/classList';
-import { ClassScreen } from 'screens/class';
+import { CalendarScreen } from 'screens/calendar';
 import { useAuth } from "context/auth-context";
 import styled from "@emotion/styled";
 import { Button, Dropdown, Menu } from 'antd';
@@ -8,14 +8,14 @@ import { Row } from 'components/lib';
 import { Navigate, BrowserRouter as Router, Route, Routes } from "react-router-dom";
 
 export const AuthenticatedApp = () => {
-
     return <Container>
         <PageHeader />
         <Main>
             <Router>
                 <Routes>
                     <Route path={'/classes'} element={<ClassListScreen />} />
-                    <Route path={'/classes/:classId/*'} element={<ClassScreen />} />
+{/*                     <Route path={'/classes/:classId/*'} element={<ClassScreen />} />
+ */}                    <Route path={'/calendar'} element={<CalendarScreen />} />
                 </Routes>
             </Router>
         </Main>
