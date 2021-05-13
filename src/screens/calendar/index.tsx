@@ -6,13 +6,14 @@ import dayGridPlugin from '@fullcalendar/daygrid'
 import interactionPlugin, { Draggable } from '@fullcalendar/interaction';
 import { useHttp } from "utils/http";
 import { useDanceClass } from "utils/danceClass";
+import { EventInput } from '@fullcalendar/react'
 
 export const CalendarScreen = () => {
-  const [event, setEvent] = useState({
-    _id: '',
-    name: ''
-});/*  */  const client = useHttp();
-  const { isLoading, error, data: list } = useDanceClass(event);
+  const [event, setEvent] = useState([{
+    title: '',
+    start: ''
+  }]);/*  */  const client = useHttp();
+  //const { isLoading, error, data: list } = useDanceClass(event);
 
   useEffect(() => {
     client('classes').then(setEvent);
@@ -26,8 +27,8 @@ export const CalendarScreen = () => {
 
     <FullCalendar
       plugins={[dayGridPlugin]}
-/*  need to fix type    events={event}
- */    />
+      events={event}
+    />
     )
     {console.log(event)}
   </Container>
