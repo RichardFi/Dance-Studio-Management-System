@@ -3,11 +3,12 @@ import styled from "@emotion/styled";
 import { Helmet } from "react-helmet";
 import FullCalendar from '@fullcalendar/react'
 import dayGridPlugin from '@fullcalendar/daygrid'
+import timeGridPlugin from '@fullcalendar/timegrid';
 import interactionPlugin, { Draggable } from '@fullcalendar/interaction';
 import { useHttp } from "utils/http";
 import { useDanceClass } from "utils/danceClass";
 import { EventInput } from '@fullcalendar/react';
-import { Button, Modal } from 'antd';
+import { Button, Modal, Row, Col } from 'antd';
 import { DanceClass } from "screens/classList/list";
 
 export interface DanceClassCalendar {
@@ -41,21 +42,23 @@ export const CalendarScreen = () => {
   };
 
   const handleCancel = () => {
-    console.log('Clicked cancel button');
     setVisible(false);
   };
 
   useEffect(() => {
     client('classes').then(data =>
-      data.map((history: DanceClass) => {
+      data.map((danceClass: DanceClass) => {
         return {
-          title: history.name,
-          start: history.startTime,
+          id: danceClass._id,
+          title: danceClass.name,
+          start: danceClass.startTime,
+          end: danceClass.endTime,
+          course: danceClass.course,
+          description: danceClass.description
         };
       })
     ).then(setEvent).then(a => console.log(event));
-    let todayStr = new Date().toISOString().replace(/T.*$/, '');
-    console.log(todayStr)
+
   }, [])
 
 
@@ -63,9 +66,6 @@ export const CalendarScreen = () => {
     <Helmet>
       <title>Calendar - ZeroOne</title>
     </Helmet>
-    <Button type="primary" onClick={showModal}>
-      Open Modal with async logic
-    </Button>
     <Modal
       title="Title"
       visible={visible}
@@ -75,12 +75,20 @@ export const CalendarScreen = () => {
     >
       <p>{modalText}</p>
     </Modal>
+
+    <Button type="primary" onClick={showModal}>
+      Create New Class
+    </Button>
+
     <FullCalendar
-      plugins={[dayGridPlugin]}
+      plugins={[dayGridPlugin, timeGridPlugin]}
+      headerToolbar={{
+        left: '',
+        center: 'title',
+        right: 'dayGridMonth,timeGridWeek,timeGridDay prev,next today',
+      }}
       events={event}
     />
-    )
-    {console.log(event)}
   </Container>
 }
 
