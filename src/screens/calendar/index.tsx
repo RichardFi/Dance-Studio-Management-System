@@ -1,49 +1,50 @@
-import { useState, useEffect } from "react";
-import styled from "@emotion/styled";
-import { Helmet } from "react-helmet";
-import FullCalendar from '@fullcalendar/react'
+import { useState, useEffect } from 'react'
+import styled from '@emotion/styled'
+import { Helmet } from 'react-helmet'
+import FullCalendar, { EventInput } from '@fullcalendar/react'
 import dayGridPlugin from '@fullcalendar/daygrid'
-import timeGridPlugin from '@fullcalendar/timegrid';
-import interactionPlugin, { Draggable } from '@fullcalendar/interaction';
-import { useHttp } from "utils/http";
-import { useDanceClass } from "utils/danceClass";
-import { EventInput } from '@fullcalendar/react';
-import { Button, Modal, Row, Col } from 'antd';
-import { DanceClass } from "screens/classList/list";
+import timeGridPlugin from '@fullcalendar/timegrid'
+import interactionPlugin, { Draggable } from '@fullcalendar/interaction'
+import { useHttp } from 'utils/http'
+import { useDanceClass } from 'utils/danceClass'
+
+import { Button, Modal, Row, Col, Form, Input } from 'antd'
+import { DanceClass } from 'screens/classList/list'
 
 export interface DanceClassCalendar {
-  _id: string;
-  title: string;
-  start: string;
+  _id: string
+  title: string
+  start: string
 }
 
 export const CalendarScreen = () => {
   const [event, setEvent] = useState([{
     title: '',
     start: ''
-  }]);/*  */
-  const client = useHttp();
-  //const { isLoading, error, data: list } = useDanceClass(event);
-  const [visible, setVisible] = useState(false);
-  const [confirmLoading, setConfirmLoading] = useState(false);
-  const [modalText, setModalText] = useState('Content of the modal');
+  }])/*  */
+  const client = useHttp()
+  // const { isLoading, error, data: list } = useDanceClass(event);
+  const [visible, setVisible] = useState(false)
+  const [confirmLoading, setConfirmLoading] = useState(false)
+  const [modalText, setModalText] = useState('Content of the modal')
 
   const showModal = () => {
-    setVisible(true);
-  };
+    setVisible(true)
+  }
 
   const handleOk = () => {
-    setModalText('The modal will be closed after two seconds');
-    setConfirmLoading(true);
+    setModalText('The modal will be closed after two seconds')
+    setConfirmLoading(true)
+
     setTimeout(() => {
-      setVisible(false);
-      setConfirmLoading(false);
-    }, 2000);
-  };
+      setVisible(false)
+      setConfirmLoading(false)
+    }, 2000)
+  }
 
   const handleCancel = () => {
-    setVisible(false);
-  };
+    setVisible(false)
+  }
 
   useEffect(() => {
     client('classes').then(data =>
@@ -55,41 +56,69 @@ export const CalendarScreen = () => {
           end: danceClass.endTime,
           course: danceClass.course,
           description: danceClass.description
-        };
+        }
       })
-    ).then(setEvent).then(a => console.log(event));
-
+    ).then(setEvent).then(a => console.log(event))
   }, [])
 
+  return (
+    <Container>
+      <Helmet>
+        <title>Calendar - ZeroOne</title>
+      </Helmet>
+      <Modal
+        title='Title'
+        visible={visible}
+        onOk={handleOk}
+        confirmLoading={confirmLoading}
+        onCancel={handleCancel}
+      >
+        <p>{modalText}</p>
+        <Form
+          name='basic'
+          initialValues={{ remember: true }}
+          /*       onFinish={onFinish}
+            onFinishFailed={onFinishFailed} */
+        >
+          <Form.Item
+            label='Username'
+            name='username'
+            rules={[{ required: true, message: 'Please input your username!' }]}
+          >
+            <Input />
+          </Form.Item>
 
-  return <Container>
-    <Helmet>
-      <title>Calendar - ZeroOne</title>
-    </Helmet>
-    <Modal
-      title="Title"
-      visible={visible}
-      onOk={handleOk}
-      confirmLoading={confirmLoading}
-      onCancel={handleCancel}
-    >
-      <p>{modalText}</p>
-    </Modal>
+          <Form.Item
+            label='Password'
+            name='password'
+            rules={[{ required: true, message: 'Please input your password!' }]}
+          >
+            <Input.Password />
+          </Form.Item>
 
-    <Button type="primary" onClick={showModal}>
-      Create New Class
-    </Button>
+          <Form.Item>
+            <Button type='primary' htmlType='submit'>
+              Submit
+            </Button>
+          </Form.Item>
+        </Form>
+      </Modal>
 
-    <FullCalendar
-      plugins={[dayGridPlugin, timeGridPlugin]}
-      headerToolbar={{
-        left: '',
-        center: 'title',
-        right: 'dayGridMonth,timeGridWeek,timeGridDay prev,next today',
-      }}
-      events={event}
-    />
-  </Container>
+      <Button type='primary' onClick={showModal}>
+        Create New Class
+      </Button>
+
+      <FullCalendar
+        plugins={[dayGridPlugin, timeGridPlugin]}
+        headerToolbar={{
+          left: '',
+          center: 'title',
+          right: 'dayGridMonth,timeGridWeek,timeGridDay prev,next today'
+        }}
+        events={event}
+      />
+    </Container>
+  )
 }
 
 const Container = styled.div`

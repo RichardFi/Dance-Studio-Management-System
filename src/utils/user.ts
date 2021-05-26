@@ -1,16 +1,16 @@
-import { User } from "screens/classList/searchPanel";
-import { useEffect } from "react";
-import { cleanObject } from "utils";
-import { useHttp } from "utils/http";
-import { useAsync } from "utils/useAsync";
+import { User } from 'screens/classList/searchPanel'
+import { useEffect } from 'react'
+import { cleanObject } from 'utils'
+import { useHttp } from 'utils/http'
+import { useAsync } from 'utils/useAsync'
 
 export const useUsers = (param?: Partial<User>) => {
-    const client = useHttp();
-    const { run, ...result } = useAsync<User[]>();
+  const client = useHttp()
+  const { run, ...result } = useAsync<User[]>()
 
-    useEffect(() => {
-        run(client('classes', { data: cleanObject(param || []) }));
-    }, [param])
+  useEffect(() => {
+    run(client('classes', { data: cleanObject((param) || []) }))
+  }, [param])
 
-    return result;
+  return result
 }

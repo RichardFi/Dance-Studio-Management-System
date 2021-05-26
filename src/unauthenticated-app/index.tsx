@@ -1,34 +1,36 @@
-import React, { useState } from "react"
-import { RegisterScreen } from "unauthenticated-app/register";
-import { LoginScreen } from "unauthenticated-app/login";
-import { Card, Divider, Button, Typography } from 'antd';
-import styled from '@emotion/styled';
-import { Helmet } from 'react-helmet';
+import React, { useState } from 'react'
+import { RegisterScreen } from 'unauthenticated-app/register'
+import { LoginScreen } from 'unauthenticated-app/login'
+import { Card, Divider, Button, Typography } from 'antd'
+import styled from '@emotion/styled'
+import { Helmet } from 'react-helmet'
 
 export const UnauthenticatedApp = () => {
-    const [isRegister, setIsRegister] = useState(false);
-    const [error, setError] = useState<Error | null>(null);
+  const [isRegister, setIsRegister] = useState(false)
+  const [error, setError] = useState<Error | null>(null)
 
-    return <Container>
-        <Helmet>
-            <title>Login/Register - ZeroOne</title>
-        </Helmet>
-        <Header />
-        <ShadowCard>
-            <Title>
-                {isRegister ? 'Register to Zero One' : 'Login to Zero One'}
-                {console.log(error)}
-            </Title>
-            {error ? <Typography.Text type={"danger"}>{error.message}</Typography.Text> : null}
-            {
-                isRegister ? <RegisterScreen onError={setError} /> : <LoginScreen onError={setError} />
-            }
-            <Divider />
-            <a onClick={() => setIsRegister(!isRegister)}>
-                {isRegister ? 'Sign in with a email and password' : `Don't have an account?`}
-            </a>
-        </ShadowCard>
+  return (
+    <Container>
+      <Helmet>
+        <title>Login/Register - ZeroOne</title>
+      </Helmet>
+      <Header />
+      <ShadowCard>
+        <Title>
+          {isRegister ? 'Register to Zero One' : 'Login to Zero One'}
+          {console.log(error)}
+        </Title>
+        {(error != null) ? <Typography.Text type='danger'>{error.message}</Typography.Text> : null}
+        {
+          isRegister ? <RegisterScreen onError={setError} /> : <LoginScreen onError={setError} />
+        }
+        <Divider />
+        <a onClick={() => setIsRegister(!isRegister)}>
+          {isRegister ? 'Sign in with a email and password' : 'Don\'t have an account?'}
+        </a>
+      </ShadowCard>
     </Container>
+  )
 }
 export const LongButton = styled(Button)`
 width:100%;
