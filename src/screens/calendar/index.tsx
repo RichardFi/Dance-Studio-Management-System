@@ -38,7 +38,6 @@ export const CalendarScreen = () => {
     _id: '',
     name: ''
   }])/*  */
-  const [date, setDate] = useState(moment(new Date()))/*  */
 
   const client = useHttp()
   // const { isLoading, error, data: list } = useDanceClass(event);
@@ -48,11 +47,20 @@ export const CalendarScreen = () => {
 
   const showModal = (arg: DateClickArg) => {
     form.setFieldsValue({ startTime: moment(arg.date), endTime: moment(arg.date) })
-    console.log(date)
     setVisible(true)
   }
 
   const handleOk = () => {
+    form
+      .validateFields()
+      .then(values => {
+        form.resetFields();
+        console.log(values)
+      })
+      .catch(info => {
+        console.log('Validate Failed:', info);
+      });
+
     setModalText('The modal will be closed after two seconds')
     setConfirmLoading(true)
 
