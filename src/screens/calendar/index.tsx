@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import styled from '@emotion/styled'
 import { Helmet } from 'react-helmet'
-import FullCalendar, { EventInput } from '@fullcalendar/react'
+import FullCalendar, { EventInput, EventClickArg } from '@fullcalendar/react'
 import dayGridPlugin from '@fullcalendar/daygrid'
 import timeGridPlugin from '@fullcalendar/timegrid'
 import interactionPlugin, { DateClickArg } from '@fullcalendar/interaction'; // for dateClick
@@ -10,6 +10,7 @@ import { useDanceClass } from 'utils/danceClass'
 import moment from 'moment'
 import { Button, Modal, Select, Row, Col, Form, Input, DatePicker, Popconfirm } from 'antd'
 import { DanceClass } from 'screens/classList/list'
+import { ClassModal } from 'screens/calendar/classModal'
 
 export interface DanceClassCalendar {
   _id: string
@@ -43,12 +44,23 @@ export const CalendarScreen = () => {
   // const { isLoading, error, data: list } = useDanceClass(event);
   const [createVisible, setCreateVisible] = useState(false)
   const [confirmCreateLoading, setConfirmCreateLoading] = useState(false)
-  
+  const [eventVisible, setEventVisible] = useState(false)
+  const [confirmEventLoading, setConfirmEventLoading] = useState(false)
+
   // const [modalText, setModalText] = useState('Content of the modal')
-  
+
   const showCreateModal = (arg: DateClickArg) => {
     form.setFieldsValue({ startTime: moment(arg.date), endTime: moment(arg.date) })
     setCreateVisible(true)
+  }
+
+  const showEventPop = (arg: EventClickArg) => {
+    console.log(arg)
+    setEventVisible(true)
+  }
+
+  const handleEventOk = () => {
+
   }
 
   const handleCreateOk = () => {
@@ -69,8 +81,12 @@ export const CalendarScreen = () => {
       });
   }
 
-  const handleCreatCancel = () => {
+  const handleCreateCancel = () => {
     setCreateVisible(false)
+  }
+
+  const handleEventCancel = () => {
+    setEventVisible(false)
   }
 
   const formItemLayout = {
@@ -114,78 +130,23 @@ export const CalendarScreen = () => {
       <Helmet>
         <title>Calendar - ZeroOne</title>
       </Helmet>
-
       <Modal
-        title='Create new class'
-        visible={createVisible}
-        onOk={handleCreateOk}
-        confirmLoading={confirmCreateLoading}
-        onCancel={handleCreatCancel}
+        title="Class"
+        visible={eventVisible}
+        onOk={handleEventOk}
+        okButtonProps={{ loading: confirmEventLoading }}
+        onCancel={handleEventCancel}
       >
-        <Form
-          name='basic'
-          initialValues={{ remember: true }}
-          form={form}
-          {...formItemLayout}
-
-        /*       onFinish={onFinish}
-          onFinishFailed={onFinishFailed} */
-        >
-          <Form.Item
-            label='Class Name'
-            name='name'
-            rules={[{ required: true, message: 'Please input the dance class name' }]}
-          >
-            <Input />
-          </Form.Item>
-
-          <Form.Item
-            label='Course'
-            name='course'
-            rules={[{ required: true, message: 'Please select a course' }]}
-          >
-            <Select>
-              {
-                course.map(course => <Select.Option key={course._id} value={course._id}>{course.name}</Select.Option>)
-              }
-            </Select>
-          </Form.Item>
-
-          <Form.Item
-            label='Start Time'
-            name='startTime'
-            rules={[{ required: true, message: 'Please input the class start time' }]}
-          >
-            <DatePicker showTime format="YYYY-MM-DD HH:mm" />
-
-          </Form.Item>
-
-          <Form.Item
-            label='End Time'
-            name='endTime'
-            rules={[{ required: true, message: 'Please input the class end time' }]}
-          >
-            <DatePicker showTime format="YYYY-MM-DD HH:mm" />
-          </Form.Item>
-
-          <Form.Item
-            label='Teacher'
-            name='teacher'
-            rules={[{ required: true, message: 'Please select a teacher for the class' }]}
-          >
-            <Input />
-          </Form.Item>
-
-          <Form.Item
-            label='Description'
-            name='description'
-            rules={[{ required: true, message: 'Please input description for the class' }]}
-          >
-            <Input.TextArea />
-          </Form.Item>
-        </Form>
       </Modal>
-
+      <ClassModal
+        createVisible={createVisible}
+        handleCreateOk={handleCreateOk}
+        confirmCreateLoading={confirmCreateLoading}
+        handleCreateCancel={handleCreateCancel}
+        form={form}
+        formItemLayout={formItemLayout}
+        course={course}
+      />
       <FullCalendar
         plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
         headerToolbar={{
@@ -195,7 +156,7 @@ export const CalendarScreen = () => {
         }}
         events={event}
         dateClick={showCreateModal}
-        //eventClick={showEventModal}
+        eventClick={showEventPop}
       />
     </Container>
   )
