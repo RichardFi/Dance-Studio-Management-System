@@ -8,7 +8,7 @@ import interactionPlugin, { DateClickArg } from '@fullcalendar/interaction'; // 
 import { useHttp } from 'utils/http'
 import { useDanceClass } from 'utils/danceClass'
 import moment from 'moment'
-import { Button, Modal, Select, Row, Col, Form, Input, DatePicker } from 'antd'
+import { Button, Modal, Select, Row, Col, Form, Input, DatePicker, Popconfirm } from 'antd'
 import { DanceClass } from 'screens/classList/list'
 
 export interface DanceClassCalendar {
@@ -41,37 +41,36 @@ export const CalendarScreen = () => {
 
   const client = useHttp()
   // const { isLoading, error, data: list } = useDanceClass(event);
-  const [visible, setVisible] = useState(false)
-  const [confirmLoading, setConfirmLoading] = useState(false)
-  const [modalText, setModalText] = useState('Content of the modal')
-
-  const showModal = (arg: DateClickArg) => {
+  const [createVisible, setCreateVisible] = useState(false)
+  const [confirmCreateLoading, setConfirmCreateLoading] = useState(false)
+  
+  // const [modalText, setModalText] = useState('Content of the modal')
+  
+  const showCreateModal = (arg: DateClickArg) => {
     form.setFieldsValue({ startTime: moment(arg.date), endTime: moment(arg.date) })
-    setVisible(true)
+    setCreateVisible(true)
   }
 
-  const handleOk = () => {
+  const handleCreateOk = () => {
     form
       .validateFields()
       .then(values => {
-        form.resetFields();
-        console.log(values)
+        setConfirmCreateLoading(true)
+        form.resetFields()
+        client('classes', { method: 'POST', data: values })
+          .then(res => {
+            setCreateVisible(false)
+            setConfirmCreateLoading(false)
+          })
       })
       .catch(info => {
-        console.log('Validate Failed:', info);
+        console.log('Validate Failed:', info)
+        setConfirmCreateLoading(false)
       });
-
-    setModalText('The modal will be closed after two seconds')
-    setConfirmLoading(true)
-
-    setTimeout(() => {
-      setVisible(false)
-      setConfirmLoading(false)
-    }, 2000)
   }
 
-  const handleCancel = () => {
-    setVisible(false)
+  const handleCreatCancel = () => {
+    setCreateVisible(false)
   }
 
   const formItemLayout = {
@@ -97,7 +96,7 @@ export const CalendarScreen = () => {
           description: danceClass.description
         }
       })
-    ).then(setEvent).then(a => console.log(event))
+    ).then(setEvent)
 
     client('courses').then(data =>
       data.map((course: Course) => {
@@ -107,22 +106,22 @@ export const CalendarScreen = () => {
           teacher: course.teacher
         }
       })
-    ).then(setCourse).then(a => console.log(course))
-  }, [])
+    ).then(setCourse)
+  }, [confirmCreateLoading])
 
   return (
     <Container>
       <Helmet>
         <title>Calendar - ZeroOne</title>
       </Helmet>
+
       <Modal
-        title='Title'
-        visible={visible}
-        onOk={handleOk}
-        confirmLoading={confirmLoading}
-        onCancel={handleCancel}
+        title='Create new class'
+        visible={createVisible}
+        onOk={handleCreateOk}
+        confirmLoading={confirmCreateLoading}
+        onCancel={handleCreatCancel}
       >
-        <p>{modalText}</p>
         <Form
           name='basic'
           initialValues={{ remember: true }}
@@ -134,7 +133,7 @@ export const CalendarScreen = () => {
         >
           <Form.Item
             label='Class Name'
-            name='className'
+            name='name'
             rules={[{ required: true, message: 'Please input the dance class name' }]}
           >
             <Input />
@@ -184,12 +183,6 @@ export const CalendarScreen = () => {
           >
             <Input.TextArea />
           </Form.Item>
-
-          <Form.Item>
-            <Button type='primary' htmlType='submit'>
-              Submit
-            </Button>
-          </Form.Item>
         </Form>
       </Modal>
 
@@ -201,7 +194,8 @@ export const CalendarScreen = () => {
           right: 'dayGridMonth,timeGridWeek,timeGridDay prev,next today'
         }}
         events={event}
-        dateClick={showModal}
+        dateClick={showCreateModal}
+        //eventClick={showEventModal}
       />
     </Container>
   )

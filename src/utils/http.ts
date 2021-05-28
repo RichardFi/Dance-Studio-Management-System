@@ -14,14 +14,15 @@ export const http = async (endpoint: string, { data, token, headers, ...customCo
     method: 'GET',
     headers: {
       Authorization: token ? `Bearer ${token}` : '',
-      'Content-Type': (data != null) ? 'application/json' : ''
+      'Content-Type': data ? 'application/json' : ''
     },
     ...customConfig
   }
   if (config.method.toUpperCase() === 'GET') {
     endpoint += `?${qs.stringify(data)}`
   } else {
-    config.body = JSON.stringify((data != null) || {})
+    console.log(config)
+    config.body = JSON.stringify(data || {})
   }
   return await window.fetch(`${apiUrl}/${endpoint}`, config)
     .then(async response => {
