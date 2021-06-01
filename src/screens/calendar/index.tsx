@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import styled from '@emotion/styled'
 import { Helmet } from 'react-helmet'
-import FullCalendar, { EventInput, EventClickArg } from '@fullcalendar/react'
+import FullCalendar, { EventInput, EventClickArg, DateSelectArg } from '@fullcalendar/react'
 import dayGridPlugin from '@fullcalendar/daygrid'
 import timeGridPlugin from '@fullcalendar/timegrid'
 import interactionPlugin, { DateClickArg } from '@fullcalendar/interaction'; // for dateClick
@@ -11,6 +11,7 @@ import moment from 'moment'
 import { Button, Modal, Select, Row, Col, Form, Input, DatePicker, Popconfirm } from 'antd'
 import { DanceClass } from 'screens/classList/list'
 import { ClassModal } from 'screens/calendar/classModal'
+import { EventModal } from 'screens/calendar/eventModal'
 
 export interface DanceClassCalendar {
   _id: string
@@ -49,13 +50,22 @@ export const CalendarScreen = () => {
 
   // const [modalText, setModalText] = useState('Content of the modal')
 
-  const showCreateModal = (arg: DateClickArg) => {
-    form.setFieldsValue({ startTime: moment(arg.date), endTime: moment(arg.date) })
+  const showCreateModal = (arg: DateSelectArg) => {
+    form.setFieldsValue({ startTime: moment(arg.start), endTime: moment(arg.end) })
     setCreateVisible(true)
   }
 
-  const showEventPop = (arg: EventClickArg) => {
-    console.log(arg)
+  const showEventModal = (arg: EventClickArg) => {
+    console.log(course)
+    console.log(arg.event.extendedProps.course)
+    let courseName
+    course.forEach(course => course._id == arg.event.extendedProps.course ? courseName = course.name : courseName='')
+    form.setFieldsValue({
+      name: arg.event.title,
+      course: courseName,
+      startTime: moment(arg.event.start),
+      endTime: moment(arg.event.end)
+    })
     setEventVisible(true)
   }
 
@@ -104,7 +114,7 @@ export const CalendarScreen = () => {
     client('classes').then(data =>
       data.map((danceClass: DanceClass) => {
         return {
-          id: danceClass._id,
+          _id: danceClass._id,
           title: danceClass.name,
           start: danceClass.startTime,
           end: danceClass.endTime,
@@ -130,14 +140,17 @@ export const CalendarScreen = () => {
       <Helmet>
         <title>Calendar - ZeroOne</title>
       </Helmet>
-      <Modal
-        title="Class"
-        visible={eventVisible}
-        onOk={handleEventOk}
-        okButtonProps={{ loading: confirmEventLoading }}
-        onCancel={handleEventCancel}
+      <EventModal
+        eventVisible={eventVisible}
+        handleEventOk={handleEventOk}
+        confirmEventLoading={confirmEventLoading}
+        handleEventCancel={handleEventCancel}
+        form={form}
+        formItemLayout={formItemLayout}
+        course={course}
       >
-      </Modal>
+
+      </EventModal>
       <ClassModal
         createVisible={createVisible}
         handleCreateOk={handleCreateOk}
@@ -155,8 +168,9 @@ export const CalendarScreen = () => {
           right: 'dayGridMonth,timeGridWeek,timeGridDay prev,next today'
         }}
         events={event}
-        dateClick={showCreateModal}
-        eventClick={showEventPop}
+        selectable={true}
+        select={showCreateModal}
+        eventClick={showEventModal}
       />
     </Container>
   )
