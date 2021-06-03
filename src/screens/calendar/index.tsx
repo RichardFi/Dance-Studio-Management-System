@@ -41,6 +41,7 @@ export const CalendarScreen = () => {
     name: ''
   }])/*  */
 
+  const [selectedClass, setSelectedClass] = useState('')
   const client = useHttp()
   // const { isLoading, error, data: list } = useDanceClass(event);
   const [createVisible, setCreateVisible] = useState(false)
@@ -56,20 +57,38 @@ export const CalendarScreen = () => {
   }
 
   const showEventModal = (arg: EventClickArg) => {
-    console.log(arg.event.extendedProps.course)
-    let courseName
-    course.forEach(course => course._id == arg.event.extendedProps.course ? courseName = course.name : courseName='')
+    console.log(arg)
+    console.log(course)
+    setSelectedClass(arg.event.extendedProps._id)
+    let courseName = ''
+    course.forEach(course => course._id === arg.event.extendedProps.course ? courseName = course.name : null)
     form.setFieldsValue({
       name: arg.event.title,
       course: courseName,
       startTime: moment(arg.event.start),
-      endTime: moment(arg.event.end)
+      endTime: moment(arg.event.end),
+      teacher: arg.event.extendedProps.teacher,
+      description: arg.event.extendedProps.description,
     })
     setEventVisible(true)
   }
 
   const handleEventOk = () => {
-
+    form
+      .validateFields()
+      .then(values => {
+        setConfirmEventLoading(true)
+        client(`classes/${selectedClass}`, { method: 'PATCH', data: values })
+          .then(res => {
+            setEventVisible(false)
+            setConfirmEventLoading(false)
+            form.resetFields()
+          })
+      })
+      .catch(info => {
+        console.log('Validate Failed:', info)
+        setConfirmEventLoading(false)
+      })
   }
 
   const handleCreateOk = () => {
@@ -77,11 +96,11 @@ export const CalendarScreen = () => {
       .validateFields()
       .then(values => {
         setConfirmCreateLoading(true)
-        form.resetFields()
         client('classes', { method: 'POST', data: values })
           .then(res => {
             setCreateVisible(false)
             setConfirmCreateLoading(false)
+            form.resetFields()
           })
       })
       .catch(info => {
@@ -118,6 +137,7 @@ export const CalendarScreen = () => {
           start: danceClass.startTime,
           end: danceClass.endTime,
           course: danceClass.course,
+          teacher:danceClass.teacher,
           description: danceClass.description
         }
       })
@@ -173,7 +193,7 @@ export const CalendarScreen = () => {
         select={showCreateModal}
         eventClick={showEventModal}
         slotMinTime={'06:00:00'}
-        slotMaxTime={'22:00:00'}
+        slotMaxTime={'21:00:00'}
       />
     </Container>
   )
