@@ -56,7 +56,6 @@ export const CalendarScreen = () => {
   }
 
   const showEventModal = (arg: EventClickArg) => {
-    console.log(course)
     console.log(arg.event.extendedProps.course)
     let courseName
     course.forEach(course => course._id == arg.event.extendedProps.course ? courseName = course.name : courseName='')
@@ -167,10 +166,14 @@ export const CalendarScreen = () => {
           center: 'title',
           right: 'dayGridMonth,timeGridWeek,timeGridDay prev,next today'
         }}
+        expandRows={true}
+        height={'100%'}
         events={event}
         selectable={true}
         select={showCreateModal}
         eventClick={showEventModal}
+        slotMinTime={'06:00:00'}
+        slotMaxTime={'22:00:00'}
       />
     </Container>
   )
