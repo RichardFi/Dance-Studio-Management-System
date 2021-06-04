@@ -17,7 +17,7 @@ export const EventModal = (props: any) => {
             initialValues={{ remember: true }}
             form={props.form}
             {...props.formItemLayout}
-
+            onFinish={props.onFinishJoinClass}
         /*       onFinish={onFinish}
           onFinishFailed={onFinishFailed} */
         >
@@ -79,8 +79,14 @@ export const EventModal = (props: any) => {
                 label='&nbsp;'
                 style={{ textAlign: 'right' }}
                 colon={false}
-            >
-                <Button type='primary'>Join the Class</Button>
+            > 
+            {
+                props.inThisClass?
+                <Button type='primary' htmlType='submit'>Exit the Class</Button>
+                :
+                <Button type='primary' htmlType='submit'>Join the Class</Button>
+                
+            }
             </Form.Item>
         </Form>
     </Modal>

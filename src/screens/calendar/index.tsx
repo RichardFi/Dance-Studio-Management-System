@@ -12,6 +12,7 @@ import { Button, Modal, Select, Row, Col, Form, Input, DatePicker, Popconfirm } 
 import { DanceClass } from 'screens/classList/list'
 import { ClassModal } from 'screens/calendar/classModal'
 import { EventModal } from 'screens/calendar/eventModal'
+import { useAuth } from 'context/auth-context'
 
 export interface DanceClassCalendar {
   _id: string
@@ -31,6 +32,8 @@ export interface Course {
 
 export const CalendarScreen = () => {
   const [form] = Form.useForm();
+  const { logout, user } = useAuth()
+  const [inThisClass, setInThisClass] = useState(false);
 
   const [event, setEvent] = useState([{
     title: '',
@@ -64,9 +67,12 @@ export const CalendarScreen = () => {
   }
 
   const showEventModal = (arg: EventClickArg) => {
-    console.log(arg)
-    console.log(arg.event.extendedProps)
     setSelectedClass(arg.event.extendedProps._id)
+    setInThisClass(arg.event.extendedProps.users.includes(user?._id))
+    
+    console.log(arg.event.extendedProps.users)
+    console.log(arg.event.extendedProps)
+
     let courseName = ''
     course.forEach(course => course._id === arg.event.extendedProps.course ? courseName = course.name : null)
     form.setFieldsValue({
@@ -85,7 +91,7 @@ export const CalendarScreen = () => {
       .validateFields()
       .then(values => {
         setConfirmEventLoading(true)
-        client(`classes/${selectedClass}`, { method: 'PATCH', data: {course: selectedClass, ...values} })
+        client(`classes/${selectedClass}`, { method: 'PATCH', data: { course: selectedClass, ...values } })
           .then(res => {
             setEventVisible(false)
             setConfirmEventLoading(false)
@@ -124,6 +130,21 @@ export const CalendarScreen = () => {
     setEventVisible(false)
   }
 
+  const onFinishJoinClass = () => {
+    setConfirmEventLoading(true)
+    client(`classes/${selectedClass}`, { method: 'PATCH', data: { users: user?._id } })
+      .then(res => {
+        setEventVisible(false)
+        setConfirmEventLoading(false)
+        form.resetFields()
+      })
+      .catch(info => {
+        alert(info.err.message)
+        setEventVisible(false)
+        setConfirmEventLoading(false)
+      })
+  }
+
   const formItemLayout = {
     labelCol: {
       xs: { span: 24 },
@@ -145,7 +166,8 @@ export const CalendarScreen = () => {
           end: danceClass.endTime,
           course: danceClass.course,
           teacher: danceClass.teacher,
-          description: danceClass.description
+          description: danceClass.description,
+          users: danceClass.users
         }
       })
     ).then(setEvent)
@@ -174,6 +196,8 @@ export const CalendarScreen = () => {
         form={form}
         formItemLayout={formItemLayout}
         course={course}
+        onFinishJoinClass={onFinishJoinClass}
+        inThisClass={inThisClass}
       >
 
       </EventModal>
