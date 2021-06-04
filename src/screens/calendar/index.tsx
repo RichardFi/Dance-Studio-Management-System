@@ -52,13 +52,20 @@ export const CalendarScreen = () => {
   // const [modalText, setModalText] = useState('Content of the modal')
 
   const showCreateModal = (arg: DateSelectArg) => {
-    form.setFieldsValue({ startTime: moment(arg.start), endTime: moment(arg.end) })
+    form.setFieldsValue({
+      name: '',
+      course: 'Please select a course',
+      startTime: moment(arg.start),
+      endTime: moment(arg.end),
+      teacher: '',
+      description: ''
+    })
     setCreateVisible(true)
   }
 
   const showEventModal = (arg: EventClickArg) => {
     console.log(arg)
-    console.log(course)
+    console.log(arg.event.extendedProps)
     setSelectedClass(arg.event.extendedProps._id)
     let courseName = ''
     course.forEach(course => course._id === arg.event.extendedProps.course ? courseName = course.name : null)
@@ -78,7 +85,7 @@ export const CalendarScreen = () => {
       .validateFields()
       .then(values => {
         setConfirmEventLoading(true)
-        client(`classes/${selectedClass}`, { method: 'PATCH', data: values })
+        client(`classes/${selectedClass}`, { method: 'PATCH', data: {course: selectedClass, ...values} })
           .then(res => {
             setEventVisible(false)
             setConfirmEventLoading(false)
@@ -137,7 +144,7 @@ export const CalendarScreen = () => {
           start: danceClass.startTime,
           end: danceClass.endTime,
           course: danceClass.course,
-          teacher:danceClass.teacher,
+          teacher: danceClass.teacher,
           description: danceClass.description
         }
       })
@@ -152,7 +159,7 @@ export const CalendarScreen = () => {
         }
       })
     ).then(setCourse)
-  }, [confirmCreateLoading])
+  }, [confirmCreateLoading, confirmEventLoading])
 
   return (
     <Container>

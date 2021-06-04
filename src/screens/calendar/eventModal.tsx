@@ -73,6 +73,15 @@ export const EventModal = (props: any) => {
             >
                 <Input.TextArea />
             </Form.Item>
+
+            <Form.Item
+                name='join'
+                label='&nbsp;'
+                style={{ textAlign: 'right' }}
+                colon={false}
+            >
+                <Button type='primary'>Join the Class</Button>
+            </Form.Item>
         </Form>
     </Modal>
 
