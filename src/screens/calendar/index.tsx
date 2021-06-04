@@ -69,7 +69,7 @@ export const CalendarScreen = () => {
   const showEventModal = (arg: EventClickArg) => {
     setSelectedClass(arg.event.extendedProps._id)
     setInThisClass(arg.event.extendedProps.users.includes(user?._id))
-    
+
     console.log(arg.event.extendedProps.users)
     console.log(arg.event.extendedProps)
 
@@ -224,6 +224,12 @@ export const CalendarScreen = () => {
         eventClick={showEventModal}
         slotMinTime={'06:00:00'}
         slotMaxTime={'21:00:00'}
+        eventTimeFormat={{
+          hour: 'numeric',
+          minute: '2-digit',
+          meridiem: false
+        }}
+        displayEventEnd={true}
       />
     </Container>
   )
