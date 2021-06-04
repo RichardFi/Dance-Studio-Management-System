@@ -73,11 +73,9 @@ export const CalendarScreen = () => {
     console.log(arg.event.extendedProps.users)
     console.log(arg.event.extendedProps)
 
-    let courseName = ''
-    course.forEach(course => course._id === arg.event.extendedProps.course ? courseName = course.name : null)
     form.setFieldsValue({
       name: arg.event.title,
-      course: courseName,
+      course: arg.event.extendedProps.course,
       startTime: moment(arg.event.start),
       endTime: moment(arg.event.end),
       teacher: arg.event.extendedProps.teacher,
@@ -91,7 +89,8 @@ export const CalendarScreen = () => {
       .validateFields()
       .then(values => {
         setConfirmEventLoading(true)
-        client(`classes/${selectedClass}`, { method: 'PATCH', data: { course: selectedClass, ...values } })
+        console.log(values)
+        client(`classes/${selectedClass}`, { method: 'PATCH', data: values })
           .then(res => {
             setEventVisible(false)
             setConfirmEventLoading(false)
