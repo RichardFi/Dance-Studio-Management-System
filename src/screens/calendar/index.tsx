@@ -57,7 +57,7 @@ export const CalendarScreen = () => {
   const showCreateModal = (arg: DateSelectArg) => {
     form.setFieldsValue({
       name: '',
-      course: 'Please select a course',
+      course: '',
       startTime: moment(arg.start),
       endTime: moment(arg.end),
       teacher: '',

@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@ant-design/pro-layout": "^6.19.5",
     "@craco/craco": "^6.1.2",
     "@emotion/react": "^11.1.5",
     "@emotion/styled": "^11.3.0",
@@ -19,6 +20,7 @@
     "@types/react-dom": "^17.0.3",
     "antd": "^4.15.4",
     "babel-plugin-import": "^1.13.3",
+    "craco-less": "^1.17.1",
     "dayjs": "^1.10.4",
     "history": "^5.0.0",
     "moment": "^2.29.1",
@@ -33,10 +35,10 @@
     "web-vitals": "^1.1.1"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject",
+    "start": "craco start",
+    "build": "craco build",
+    "test": "craco test",
+    "eject": "craco eject",
     "json-server": "json-server -p3001 __json_server_mock__/db.json --watch"
   },
   "eslintConfig": {
