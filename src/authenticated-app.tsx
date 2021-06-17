@@ -4,13 +4,25 @@ import { CalendarScreen } from 'screens/calendar'
 import { useAuth } from 'context/auth-context'
 import styled from '@emotion/styled'
 import { Row } from 'components/lib'
-import { Navigate, BrowserRouter as Router, Route, Routes } from 'react-router-dom'
-import { Button, Descriptions, Result, Avatar, Space, Statistic } from 'antd';
-import { LikeOutlined, UserOutlined } from '@ant-design/icons';
+import { Link } from 'react-router-dom'
+import { Routes, Route } from 'react-router'
+import { BrowserRouter } from 'react-router-dom';
+
+import { Layout, Menu } from 'antd';
+import {
+  MenuUnfoldOutlined,
+  MenuFoldOutlined,
+  UserOutlined,
+  VideoCameraOutlined,
+  UploadOutlined,
+} from '@ant-design/icons';
 import { SmileOutlined, CrownOutlined, TabletOutlined, AntDesignOutlined } from '@ant-design/icons';
+import { } from 'react-router-dom';
 
 import type { ProSettings } from '@ant-design/pro-layout';
 import ProLayout, { PageContainer, SettingDrawer } from '@ant-design/pro-layout';
+
+const { Header, Sider, Content, Footer } = Layout;
 
 const defaultProps = {
   route: {
@@ -20,7 +32,7 @@ const defaultProps = {
         path: '/welcome',
         name: '欢迎',
         icon: <SmileOutlined />,
-        component: './Welcome',
+        component: { CalendarScreen },
       },
       {
         path: '/admin',
@@ -38,12 +50,6 @@ const defaultProps = {
           {
             path: '/admin/sub-page2',
             name: '二级页面',
-            icon: <CrownOutlined />,
-            component: './Welcome',
-          },
-          {
-            path: '/admin/sub-page3',
-            name: '三级页面',
             icon: <CrownOutlined />,
             component: './Welcome',
           },
@@ -105,7 +111,7 @@ const defaultProps = {
     pathname: '/',
   },
 };
-const content = (
+/* const content = (
   <Descriptions size="small" column={2}>
     <Descriptions.Item label="Name">Yongrui Pan</Descriptions.Item>
     <Descriptions.Item label="Contact">
@@ -114,128 +120,51 @@ const content = (
     <Descriptions.Item label="Join Date">2017-01-10</Descriptions.Item>
     <Descriptions.Item label="Update Date">2017-10-10</Descriptions.Item>
   </Descriptions>
-);
+); */
 
 export const AuthenticatedApp = () => {
-
   const [settings, setSetting] = useState<Partial<ProSettings> | undefined>({ fixSiderbar: true });
   const [pathname, setPathname] = useState('/welcome');
+
   return (
-    <div
-      id="test-pro-layout"
-      style={{
-        height: '100vh',
-      }}
-    >
-      <ProLayout
-        {...defaultProps}
-        location={{
-          pathname,
-        }}
-        menuFooterRender={(props) => {
-          return (
-            <a
-              style={{
-                lineHeight: '48rpx',
-                display: 'flex',
-                height: 48,
-                color: 'rgba(255, 255, 255, 0.65)',
-                alignItems: 'center',
-              }}
-              href="https://preview.pro.ant.design/dashboard/analysis"
-              target="_blank"
-              rel="noreferrer"
-            >
-              <img
-                alt="pro-logo"
-                src="https://procomponents.ant.design/favicon.ico"
-                style={{
-                  width: 16,
-                  height: 16,
-                  margin: '0 16px',
-                  marginRight: 10,
-                }}
-              />
-              {!props?.collapsed && 'Preview Pro'}
-            </a>
-          );
-        }}
-        onMenuHeaderClick={(e) => console.log(e)}
-        menuItemRender={(item, dom) => (
-          <a
-            onClick={() => {
-              setPathname(item.path || '/welcome');
-            }}
-          >
-            {dom}
-          </a>
-        )}
-        rightContentRender={() => (
-          <div>
-            <Avatar shape="square" size="small" icon={<UserOutlined />} />
-          </div>
-        )}
-        {...settings}
-      >
-        <PageContainer
-          content={content}
-          tabList={[
-            {
-              tab: '基本信息',
-              key: 'base',
-            },
-            {
-              tab: '详细信息',
-              key: 'info',
-            },
-          ]}
-          extraContent={
-            <Space size={24}>
-              <Statistic title="Feedback" value={1128} prefix={<LikeOutlined />} />
-              <Statistic title="Unmerged" value={93} suffix="/ 100" />
-            </Space>
+    <Layout style={{ minHeight: '100vh' }}>
+      <BrowserRouter>
+
+        <Sider collapsible>
+          <div className="logo" style={{
+            height: '32px',
+            margin: '16px',
+            background: 'rgba(255, 255, 255, 0.3)'
           }
-          extra={[
-            <Button key="3">操作</Button>,
-            <Button key="2">操作</Button>,
-            <Button key="1" type="primary">
-              主操作
-            </Button>,
-          ]}
-          footer={[
-            <Button key="3">重置</Button>,
-            <Button key="2" type="primary">
-              提交
-            </Button>,
-          ]}
-        >
-          <div
-            style={{
-              height: '120vh',
-            }}
-          >
-            <Result
-              status="404"
-              style={{
-                height: '100%',
-                background: '#fff',
-              }}
-              title="Hello World"
-              subTitle="Sorry, you are not authorized to access this page."
-              extra={<Button type="primary">Back Home</Button>}
-            />
-          </div>
-        </PageContainer>
-      </ProLayout>
-      <SettingDrawer
-        pathname={pathname}
-        getContainer={() => document.getElementById('test-pro-layout')}
-        settings={settings}
-        onSettingChange={(changeSetting) => setSetting(changeSetting)}
-        disableUrlParams
-      />
-    </div>
+          } />
+          <Menu theme="dark" defaultSelectedKeys={['1']} mode="inline">
+            <Menu.Item key="1">
+              <Link to="/calendar">Calendar</Link>
+            </Menu.Item>
+            <Menu.Item key="2">
+              <Link to="/my-classes">My Classes</Link>
+            </Menu.Item>
+            <Menu.Item key="9">
+              Files
+            </Menu.Item>
+          </Menu>
+        </Sider>
+        <Layout>
+          <Header style={{ margin: ' 0 0.5rem', backgroundColor: '#fff' }}></Header>
+          <Content style={{ margin: '0.5rem', backgroundColor: '#fff' }}>
+            <Routes>
+              <Route path='/calendar' element={<CalendarScreen />}></Route>
+              <Route path='/my-classes' element={<ClassListScreen />}></Route>
+            </Routes>
+
+          </Content>
+          <Footer style={{ textAlign: 'center', color: '#ccc' }}>©2021 </Footer>
+        </Layout>
+      </BrowserRouter>
+
+    </Layout>
   );
+
 }
 /* 
 const PageHeader = () => {
@@ -275,11 +204,11 @@ const Container = styled.div`
 `
 
 // grid-area
-const Header = styled(Row)`
+/* const Header = styled(Row)`
 padding: 3.2rem;
 box-shadow: 0 0 5px 0 rgba(0,0,0,0.1);
 z-index: 1;
-`
+` */
 const HeaderLeft = styled(Row)``
 const HeaderRight = styled.div``
 

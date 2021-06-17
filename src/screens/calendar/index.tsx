@@ -217,7 +217,7 @@ export const CalendarScreen = () => {
           right: 'dayGridMonth,timeGridWeek,timeGridDay prev,next today'
         }}
         expandRows={true}
-        height={'100%'}
+        height={'auto'}
         events={event}
         selectable={true}
         select={showCreateModal}
