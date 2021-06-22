@@ -8,7 +8,7 @@ import { Link } from 'react-router-dom'
 import { Routes, Route } from 'react-router'
 import { BrowserRouter } from 'react-router-dom';
 
-import { Layout, Menu } from 'antd';
+import { Layout, Menu, Dropdown } from 'antd';
 import {
   MenuUnfoldOutlined,
   MenuFoldOutlined,
@@ -125,6 +125,7 @@ const defaultProps = {
 export const AuthenticatedApp = () => {
   const [settings, setSetting] = useState<Partial<ProSettings> | undefined>({ fixSiderbar: true });
   const [pathname, setPathname] = useState('/welcome');
+  const { logout, user } = useAuth()
 
   return (
     <Layout style={{ minHeight: '100vh' }}>
@@ -150,7 +151,21 @@ export const AuthenticatedApp = () => {
           </Menu>
         </Sider>
         <Layout>
-          <Header style={{ margin: ' 0 0.5rem', backgroundColor: '#fff' }}></Header>
+          <Header style={{ margin: ' 0 0.5rem', backgroundColor: '#fff' }}>
+            <HeaderRight>
+              <Dropdown overlay={<Menu>
+                <Menu.Item key='logout'>
+                  <a onClick={logout}>Logout</a>
+                </Menu.Item>
+              </Menu>}
+              >
+                <a onClick={e => e.preventDefault()}>
+                  {console.log(user)}
+                  Hi, {user?.firstName}
+                </a>
+              </Dropdown>
+            </HeaderRight>
+          </Header>
           <Content style={{ margin: '0.5rem', backgroundColor: '#fff' }}>
             <Routes>
               <Route path='/calendar' element={<CalendarScreen />}></Route>

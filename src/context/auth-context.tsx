@@ -20,7 +20,7 @@ const bootstrapUser = async () => {
     user = data.user
     user.token = token
   }
-
+  console.log(user)
   return user
 }
 
