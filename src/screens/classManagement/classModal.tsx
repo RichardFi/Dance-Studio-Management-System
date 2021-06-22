@@ -4,20 +4,20 @@ import { Button, Modal, Select, Row, Col, Form, Input, DatePicker, Popconfirm } 
 
 }
  */
-export const EventModal = (props: any) => {
+export const ClassModal = (props: any) => {
     return <Modal
-        title='Class'
-        visible={props.eventVisible}
-        onOk={props.handleEventOk}
-        confirmLoading={props.confirmEventLoading}
-        onCancel={props.handleEventCancel}
+        title='Create new class'
+        visible={props.createVisible}
+        onOk={props.handleCreateOk}
+        confirmLoading={props.confirmCreateLoading}
+        onCancel={props.handleCreateCancel}
     >
         <Form
             name='basic'
             initialValues={{ remember: true }}
             form={props.form}
             {...props.formItemLayout}
-            onFinish={props.onFinishJoinClass}
+
         /*       onFinish={onFinish}
           onFinishFailed={onFinishFailed} */
         >

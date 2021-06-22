@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { ClassListScreen } from 'screens/classList'
+import { ClassManagementScreen } from 'screens/classManagement'
 import { CalendarScreen } from 'screens/calendar'
 import { useAuth } from 'context/auth-context'
 import styled from '@emotion/styled'
@@ -32,7 +33,7 @@ const defaultProps = {
         path: '/welcome',
         name: '欢迎',
         icon: <SmileOutlined />,
-        component: { CalendarScreen },
+        component: { ClassManagementScreen },
       },
       {
         path: '/admin',
@@ -140,10 +141,13 @@ export const AuthenticatedApp = () => {
           } />
           <Menu theme="dark" defaultSelectedKeys={['1']} mode="inline">
             <Menu.Item key="1">
-              <Link to="/calendar">Calendar</Link>
+              <Link to="/class-management">Class Management</Link>
             </Menu.Item>
             <Menu.Item key="2">
               <Link to="/my-classes">My Classes</Link>
+            </Menu.Item>
+            <Menu.Item key="3">
+              <Link to="/calendar">Calendar</Link>
             </Menu.Item>
             <Menu.Item key="9">
               Files
@@ -151,23 +155,24 @@ export const AuthenticatedApp = () => {
           </Menu>
         </Sider>
         <Layout>
-          <Header style={{ margin: ' 0 0.5rem', backgroundColor: '#fff' }}>
-            <HeaderRight>
-              <Dropdown overlay={<Menu>
+          <Header style={{ height: '4.5rem', backgroundColor: '#fff', boxShadow: '0 1px 4px rgba(0,21,41,.08)' }}>
+            <Dropdown overlay={
+              <Menu>
                 <Menu.Item key='logout'>
                   <a onClick={logout}>Logout</a>
                 </Menu.Item>
-              </Menu>}
-              >
-                <a onClick={e => e.preventDefault()}>
-                  {console.log(user)}
+              </Menu>
+            }
+            >
+              <HeaderItem onClick={e => e.preventDefault()}>
+                {console.log(user)}
                   Hi, {user?.firstName}
-                </a>
-              </Dropdown>
-            </HeaderRight>
+              </HeaderItem>
+            </Dropdown>
           </Header>
           <Content style={{ margin: '0.5rem', backgroundColor: '#fff' }}>
             <Routes>
+              <Route path='/class-management' element={<ClassManagementScreen />}></Route>
               <Route path='/calendar' element={<CalendarScreen />}></Route>
               <Route path='/my-classes' element={<ClassListScreen />}></Route>
             </Routes>
@@ -177,7 +182,7 @@ export const AuthenticatedApp = () => {
         </Layout>
       </BrowserRouter>
 
-    </Layout>
+    </Layout >
   );
 
 }
@@ -225,10 +230,22 @@ box-shadow: 0 0 5px 0 rgba(0,0,0,0.1);
 z-index: 1;
 ` */
 const HeaderLeft = styled(Row)``
-const HeaderRight = styled.div``
 
-const HeaderItem = styled.h3`
-margin-right: 3rem;
+const HeaderRight = styled.div`
+float: right
+`
+
+const HeaderItem = styled.a`
+  float: right;
+  display: flex;
+  align-items: center;
+  height: 100%;
+  padding: 0 12px;
+  cursor: pointer;
+  transition: all .3s;
+  &:hover {
+        background: rgb(0,0,0,.025);
+      }
 `
 
 const Main = styled.main`

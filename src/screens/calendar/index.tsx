@@ -33,7 +33,6 @@ export interface Course {
 export const CalendarScreen = () => {
   const [form] = Form.useForm();
   const { logout, user } = useAuth()
-  const [inThisClass, setInThisClass] = useState(false);
 
   const [event, setEvent] = useState([{
     title: '',
@@ -44,105 +43,8 @@ export const CalendarScreen = () => {
     name: ''
   }])/*  */
 
-  const [selectedClass, setSelectedClass] = useState('')
   const client = useHttp()
   // const { isLoading, error, data: list } = useDanceClass(event);
-  const [createVisible, setCreateVisible] = useState(false)
-  const [confirmCreateLoading, setConfirmCreateLoading] = useState(false)
-  const [eventVisible, setEventVisible] = useState(false)
-  const [confirmEventLoading, setConfirmEventLoading] = useState(false)
-
-  // const [modalText, setModalText] = useState('Content of the modal')
-
-  const showCreateModal = (arg: DateSelectArg) => {
-    form.setFieldsValue({
-      name: '',
-      course: '',
-      startTime: moment(arg.start),
-      endTime: moment(arg.end),
-      teacher: '',
-      description: ''
-    })
-    setCreateVisible(true)
-  }
-
-  const showEventModal = (arg: EventClickArg) => {
-    setSelectedClass(arg.event.extendedProps._id)
-    setInThisClass(arg.event.extendedProps.users.includes(user?._id))
-
-    console.log(arg.event.extendedProps.users)
-    console.log(arg.event.extendedProps)
-
-    form.setFieldsValue({
-      name: arg.event.title,
-      course: arg.event.extendedProps.course,
-      startTime: moment(arg.event.start),
-      endTime: moment(arg.event.end),
-      teacher: arg.event.extendedProps.teacher,
-      description: arg.event.extendedProps.description,
-    })
-    setEventVisible(true)
-  }
-
-  const handleEventOk = () => {
-    form
-      .validateFields()
-      .then(values => {
-        setConfirmEventLoading(true)
-        console.log(values)
-        client(`classes/${selectedClass}`, { method: 'PATCH', data: values })
-          .then(res => {
-            setEventVisible(false)
-            setConfirmEventLoading(false)
-            form.resetFields()
-          })
-      })
-      .catch(info => {
-        console.log('Validate Failed:', info)
-        setConfirmEventLoading(false)
-      })
-  }
-
-  const handleCreateOk = () => {
-    form
-      .validateFields()
-      .then(values => {
-        setConfirmCreateLoading(true)
-        client('classes', { method: 'POST', data: values })
-          .then(res => {
-            setCreateVisible(false)
-            setConfirmCreateLoading(false)
-            form.resetFields()
-          })
-      })
-      .catch(info => {
-        console.log('Validate Failed:', info)
-        setConfirmCreateLoading(false)
-      });
-  }
-
-  const handleCreateCancel = () => {
-    setCreateVisible(false)
-  }
-
-  const handleEventCancel = () => {
-    setEventVisible(false)
-  }
-
-  const onFinishJoinClass = () => {
-    setConfirmEventLoading(true)
-    client(`classes/${selectedClass}`, { method: 'PATCH', data: { users: user?._id } })
-      .then(res => {
-        setEventVisible(false)
-        setConfirmEventLoading(false)
-        form.resetFields()
-      })
-      .catch(info => {
-        alert(info.err.message)
-        setEventVisible(false)
-        setConfirmEventLoading(false)
-      })
-  }
 
   const formItemLayout = {
     labelCol: {
@@ -180,35 +82,13 @@ export const CalendarScreen = () => {
         }
       })
     ).then(setCourse)
-  }, [confirmCreateLoading, confirmEventLoading])
+  }, [])
 
   return (
     <Container>
       <Helmet>
         <title>Calendar - ZeroOne</title>
       </Helmet>
-      <EventModal
-        eventVisible={eventVisible}
-        handleEventOk={handleEventOk}
-        confirmEventLoading={confirmEventLoading}
-        handleEventCancel={handleEventCancel}
-        form={form}
-        formItemLayout={formItemLayout}
-        course={course}
-        onFinishJoinClass={onFinishJoinClass}
-        inThisClass={inThisClass}
-      >
-
-      </EventModal>
-      <ClassModal
-        createVisible={createVisible}
-        handleCreateOk={handleCreateOk}
-        confirmCreateLoading={confirmCreateLoading}
-        handleCreateCancel={handleCreateCancel}
-        form={form}
-        formItemLayout={formItemLayout}
-        course={course}
-      />
       <FullCalendar
         plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
         headerToolbar={{
@@ -219,9 +99,9 @@ export const CalendarScreen = () => {
         expandRows={true}
         height={'auto'}
         events={event}
-        selectable={true}
+        selectable={true}/* 
         select={showCreateModal}
-        eventClick={showEventModal}
+        eventClick={showEventModal} */
         slotMinTime={'06:00:00'}
         slotMaxTime={'21:00:00'}
         eventTimeFormat={{
