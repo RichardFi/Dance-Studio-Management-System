@@ -8,7 +8,7 @@ import interactionPlugin, { DateClickArg } from '@fullcalendar/interaction'; // 
 import { useHttp } from 'utils/http'
 import { useDanceClass } from 'utils/danceClass'
 import moment from 'moment'
-import { Button, Modal, Select, Row, Col, Form, Input, DatePicker, Popconfirm } from 'antd'
+import { Button, Modal, Select, Row, Col, Form, Input, DatePicker, Popover } from 'antd'
 import { DanceClass } from 'screens/classList/list'
 import { ClassModal } from 'screens/calendar/classModal'
 import { EventModal } from 'screens/calendar/eventModal'
@@ -42,6 +42,20 @@ export const CalendarScreen = () => {
     _id: '',
     name: ''
   }])/*  */
+
+  const [isModalVisible, setIsModalVisible] = useState(false);
+
+  const showModal = () => {
+    setIsModalVisible(true);
+  };
+
+  const handleOk = () => {
+    setIsModalVisible(false);
+  };
+
+  const handleCancel = () => {
+    setIsModalVisible(false);
+  };
 
   const client = useHttp()
   // const { isLoading, error, data: list } = useDanceClass(event);
@@ -89,6 +103,12 @@ export const CalendarScreen = () => {
       <Helmet>
         <title>Calendar - ZeroOne</title>
       </Helmet>
+      <Modal title="Class Detail" visible={isModalVisible} onOk={handleOk} onCancel={handleCancel}>
+        <h1 style={{margin: 0}}>Richard Best Jazz Class</h1>
+        <p style={{marginBottom: '2rem',color:'rgb(0,0,0,0.6)'}}>Wednesday, 9 June 9:00 - 11:00</p>
+        <p>Teacher: Richard</p>
+        <p>Course: Jazz</p>
+      </Modal>
       <FullCalendar
         plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
         headerToolbar={{
@@ -100,8 +120,8 @@ export const CalendarScreen = () => {
         height={'auto'}
         events={event}
         selectable={true}/* 
-        select={showCreateModal}
-        eventClick={showEventModal} */
+        select={showCreateModal} */
+        eventClick={showModal}
         slotMinTime={'06:00:00'}
         slotMaxTime={'21:00:00'}
         eventTimeFormat={{

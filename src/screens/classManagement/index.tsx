@@ -198,8 +198,8 @@ export const ClassManagementScreen = () => {
         onFinishJoinClass={onFinishJoinClass}
         inThisClass={inThisClass}
       >
-
       </EventModal>
+      
       <ClassModal
         createVisible={createVisible}
         handleCreateOk={handleCreateOk}
