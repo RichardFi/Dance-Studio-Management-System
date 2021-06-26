@@ -17,7 +17,6 @@ export const EventModal = (props: any) => {
             initialValues={{ remember: true }}
             form={props.form}
             {...props.formItemLayout}
-            onFinish={props.onFinishJoinClass}
         /*       onFinish={onFinish}
           onFinishFailed={onFinishFailed} */
         >

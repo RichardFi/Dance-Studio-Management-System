@@ -1,14 +1,13 @@
 import { useState, useEffect } from 'react'
 import styled from '@emotion/styled'
 import { Helmet } from 'react-helmet'
-import FullCalendar, { EventInput, EventClickArg, DateSelectArg } from '@fullcalendar/react'
+import FullCalendar, { EventClickArg, DateSelectArg } from '@fullcalendar/react'
 import dayGridPlugin from '@fullcalendar/daygrid'
 import timeGridPlugin from '@fullcalendar/timegrid'
-import interactionPlugin, { DateClickArg } from '@fullcalendar/interaction'; // for dateClick
+import interactionPlugin from '@fullcalendar/interaction'; // for dateClick
 import { useHttp } from 'utils/http'
-import { useDanceClass } from 'utils/danceClass'
 import moment from 'moment'
-import { Button, Modal, Select, Row, Col, Form, Input, DatePicker, Popconfirm } from 'antd'
+import { Form } from 'antd'
 import { DanceClass } from 'screens/classList/list'
 import { ClassModal } from 'screens/classManagement/classModal'
 import { EventModal } from 'screens/classManagement/eventModal'
@@ -33,7 +32,6 @@ export interface Course {
 export const ClassManagementScreen = () => {
   const [form] = Form.useForm();
   const { logout, user } = useAuth()
-  const [inThisClass, setInThisClass] = useState(false);
 
   const [event, setEvent] = useState([{
     title: '',
@@ -68,7 +66,6 @@ export const ClassManagementScreen = () => {
 
   const showEventModal = (arg: EventClickArg) => {
     setSelectedClass(arg.event.extendedProps._id)
-    setInThisClass(arg.event.extendedProps.users.includes(user?._id))
 
     console.log(arg.event.extendedProps.users)
     console.log(arg.event.extendedProps)
@@ -195,11 +192,9 @@ export const ClassManagementScreen = () => {
         form={form}
         formItemLayout={formItemLayout}
         course={course}
-        onFinishJoinClass={onFinishJoinClass}
-        inThisClass={inThisClass}
       >
       </EventModal>
-      
+
       <ClassModal
         createVisible={createVisible}
         handleCreateOk={handleCreateOk}
