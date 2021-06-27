@@ -45,16 +45,6 @@ export const List = ({ users, ...props }: ListProps) => {
           title: 'End Time',
           dataIndex: 'endTime'
         },
-        {
-          title: 'Person',
-          render (value, danceClass) {
-            return (
-              <span>
-                {users.find(user => user._id === danceClass.users[0])?.firstName || 'unknown'}
-              </span>
-            )
-          }
-        }
       ]} {...props}
     />
   )

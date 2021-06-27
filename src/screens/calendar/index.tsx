@@ -46,12 +46,6 @@ export const CalendarScreen = () => {
   const [isModalVisible, setIsModalVisible] = useState(false);
 
   const showModal = () => {
-
-    const str = 'vhe quick brown fox jumps over the lazy dog. It barked.';
-    const regex =  /[vow]/;
-    const found = str[0].match(regex)
-    console.log(found)
-
     setIsModalVisible(true);
   };
 
@@ -144,19 +138,3 @@ export const CalendarScreen = () => {
 const Container = styled.div`
 padding: 3.2rem;
 `
-
-
-const str = 'che quick brown fox jumps over the lazy dog. It barked    '
-const regex =  /[vow]/;
-const found = str[0].match(regex)
-console.log(found,str[0])
-if (found){
-  console.log('match')
-
-} else{
-  console.log('not')
-
-}
-
-
-console.log(str.trim())

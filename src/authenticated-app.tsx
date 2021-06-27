@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { ClassListScreen } from 'screens/classList'
 import { ClassManagementScreen } from 'screens/classManagement'
 import { CalendarScreen } from 'screens/calendar'
@@ -22,96 +22,10 @@ import { } from 'react-router-dom';
 
 import type { ProSettings } from '@ant-design/pro-layout';
 import ProLayout, { PageContainer, SettingDrawer } from '@ant-design/pro-layout';
+import { TeacherManagementScreen } from 'screens/teacherManagement';
 
 const { Header, Sider, Content, Footer } = Layout;
 
-const defaultProps = {
-  route: {
-    path: '/',
-    routes: [
-      {
-        path: '/welcome',
-        name: '欢迎',
-        icon: <SmileOutlined />,
-        component: { ClassManagementScreen },
-      },
-      {
-        path: '/admin',
-        name: '管理页',
-        icon: <CrownOutlined />,
-        access: 'canAdmin',
-        component: './Admin',
-        routes: [
-          {
-            path: '/admin/sub-page1',
-            name: '一级页面',
-            icon: <CrownOutlined />,
-            component: './Welcome',
-          },
-          {
-            path: '/admin/sub-page2',
-            name: '二级页面',
-            icon: <CrownOutlined />,
-            component: './Welcome',
-          },
-        ],
-      },
-      {
-        name: '列表页',
-        icon: <TabletOutlined />,
-        path: '/list',
-        component: './ListTableList',
-        routes: [
-          {
-            path: '/list/sub-page',
-            name: '一级列表页面',
-            icon: <CrownOutlined />,
-            routes: [
-              {
-                path: 'sub-sub-page1',
-                name: '一一级列表页面',
-                icon: <CrownOutlined />,
-                component: './Welcome',
-              },
-              {
-                path: 'sub-sub-page2',
-                name: '一二级列表页面',
-                icon: <CrownOutlined />,
-                component: './Welcome',
-              },
-              {
-                path: 'sub-sub-page3',
-                name: '一三级列表页面',
-                icon: <CrownOutlined />,
-                component: './Welcome',
-              },
-            ],
-          },
-          {
-            path: '/list/sub-page2',
-            name: '二级列表页面',
-            icon: <CrownOutlined />,
-            component: './Welcome',
-          },
-          {
-            path: '/list/sub-page3',
-            name: '三级列表页面',
-            icon: <CrownOutlined />,
-            component: './Welcome',
-          },
-        ],
-      },
-      {
-        path: 'https://ant.design',
-        name: 'Ant Design 官网外链',
-        icon: <AntDesignOutlined />,
-      },
-    ],
-  },
-  location: {
-    pathname: '/',
-  },
-};
 /* const content = (
   <Descriptions size="small" column={2}>
     <Descriptions.Item label="Name">Yongrui Pan</Descriptions.Item>
@@ -125,7 +39,7 @@ const defaultProps = {
 
 export const AuthenticatedApp = () => {
   const [settings, setSetting] = useState<Partial<ProSettings> | undefined>({ fixSiderbar: true });
-  const [pathname, setPathname] = useState('/welcome');
+  const [pathname, setPathname] = useState(window.location.pathname);
   const { logout, user } = useAuth()
 
   return (
@@ -139,15 +53,18 @@ export const AuthenticatedApp = () => {
             background: 'rgba(255, 255, 255, 0.3)'
           }
           } />
-          <Menu theme="dark" defaultSelectedKeys={['1']} mode="inline">
-            <Menu.Item key="1">
+          <Menu theme="dark" defaultSelectedKeys={['/1']} mode="inline">
+            <Menu.Item key="/class-management">
               <Link to="/class-management">Class Management</Link>
             </Menu.Item>
-            <Menu.Item key="2">
+            <Menu.Item key="/my-classes">
               <Link to="/my-classes">My Classes</Link>
             </Menu.Item>
-            <Menu.Item key="3">
+            <Menu.Item key="/calendar">
               <Link to="/calendar">Calendar</Link>
+            </Menu.Item>
+            <Menu.Item key="/teacher-management">
+              <Link to="/teacher-management">Teacher Management</Link>
             </Menu.Item>
             <Menu.Item key="9">
               Files
@@ -175,6 +92,7 @@ export const AuthenticatedApp = () => {
               <Route path='/class-management' element={<ClassManagementScreen />}></Route>
               <Route path='/calendar' element={<CalendarScreen />}></Route>
               <Route path='/my-classes' element={<ClassListScreen />}></Route>
+              <Route path='/teacher-management' element={<TeacherManagementScreen />}></Route>
             </Routes>
 
           </Content>
@@ -186,36 +104,6 @@ export const AuthenticatedApp = () => {
   );
 
 }
-/* 
-const PageHeader = () => {
-  const { logout, user } = useAuth()
-
-  return (
-    <Header between>
-      <HeaderLeft gap>
-        <h2>Logo</h2>
-        <h2>Class</h2>
-        <h2>User</h2>
-      </HeaderLeft>
-      <HeaderRight>
-        <Dropdown overlay={<Menu>
-          <Menu.Item key='logout'>
-            <a onClick={logout}>Logout</a>
-          </Menu.Item>
-        </Menu>}
-        >
-          <a onClick={e => e.preventDefault()}>
-            {console.log(user)}
-            Hi, {user?._id}
-          </a>
-        </Dropdown>
-      </HeaderRight>
-    </Header>
-  )
-} */
-/* const PageHeader = styled.header`
-height: 6rem;
-` */
 
 const Container = styled.div`
   display: grid;
