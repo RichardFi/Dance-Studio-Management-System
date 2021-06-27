@@ -63,24 +63,24 @@ export const TeacherManagementScreen = () => {
   const [editingKey, setEditingKey] = useState('');
   const client = useHttp()
 
-  const isEditing = (record: Item) => record.key === editingKey;
+  const isEditing = (record: Item) => record._id === editingKey;
 
-  const edit = (record: Partial<Item> & { key: React.Key }) => {
+  const edit = (record: Partial<Item> & { _id: React.Key }) => {
     form.setFieldsValue({ name: '', description: '', ...record });
-    setEditingKey(record.key);
+    setEditingKey(record._id);
   };
 
   const cancel = () => {
     setEditingKey('');
   };
 
-  const save = async (key: React.Key) => {
+  const save = async (_id: React.Key) => {
     try {
       const row = (await form.validateFields()) as Item;
 
       const newData = [...data];
       console.log(newData)
-      const index = newData.findIndex(item => key === item.key);
+      const index = newData.findIndex(item => _id === item._id);
 
       if (index > -1) {
         const item = newData[index];
@@ -89,12 +89,8 @@ export const TeacherManagementScreen = () => {
           ...row,
         });
 
-        console.log(item)
-        console.log(newData)
-
         client(`teachers/${newData[index]._id}`, { method: 'PATCH', data: newData[index] })
           .then(res => {
-            console.log(res)
             setData(newData)
             setEditingKey('')
           })
@@ -134,10 +130,11 @@ export const TeacherManagementScreen = () => {
       title: 'operation',
       dataIndex: 'operation',
       render: (_: any, record: Item) => {
+        console.log(record)
         const editable = isEditing(record);
         return editable ? (
           <span>
-            <a href="javascript:;" onClick={() => save(record.key)} style={{ marginRight: 8 }}>
+            <a href="javascript:;" onClick={() => save(record._id)} style={{ marginRight: 8 }}>
               Save
             </a>
             <Popconfirm title="Sure to cancel?" onConfirm={cancel}>

@@ -9,7 +9,7 @@ import { Link } from 'react-router-dom'
 import { Routes, Route } from 'react-router'
 import { BrowserRouter } from 'react-router-dom';
 
-import { Layout, Menu, Dropdown } from 'antd';
+import { Layout, Menu, Dropdown, PageHeader } from 'antd';
 import {
   MenuUnfoldOutlined,
   MenuFoldOutlined,
@@ -72,7 +72,7 @@ export const AuthenticatedApp = () => {
           </Menu>
         </Sider>
         <Layout>
-          <Header style={{ height: '4.5rem', backgroundColor: '#fff', boxShadow: '0 1px 4px rgba(0,21,41,.08)' }}>
+          <Header style={{ height: '4.5rem', backgroundColor: '#fff', boxShadow: '0 0.1rem 0.4rem rgba(0,21,41,.08)' }}>
             <Dropdown overlay={
               <Menu>
                 <Menu.Item key='logout'>
@@ -87,6 +87,7 @@ export const AuthenticatedApp = () => {
               </HeaderItem>
             </Dropdown>
           </Header>
+
           <Content style={{ margin: '0.5rem', backgroundColor: '#fff' }}>
             <Routes>
               <Route path='/class-management' element={<ClassManagementScreen />}></Route>
@@ -94,7 +95,6 @@ export const AuthenticatedApp = () => {
               <Route path='/my-classes' element={<ClassListScreen />}></Route>
               <Route path='/teacher-management' element={<TeacherManagementScreen />}></Route>
             </Routes>
-
           </Content>
           <Footer style={{ textAlign: 'center', color: '#ccc' }}>©2021 </Footer>
         </Layout>
