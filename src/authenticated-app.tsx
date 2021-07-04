@@ -64,7 +64,7 @@ export const AuthenticatedApp = () => {
               <Link to="/calendar">Calendar</Link>
             </Menu.Item>
             <Menu.Item key="/teacher-management">
-              <Link to="/teacher-management">Teacher Management</Link>
+              <Link to="/teacher-management" >Teacher Management</Link>
             </Menu.Item>
             <Menu.Item key="9">
               Files
@@ -72,7 +72,7 @@ export const AuthenticatedApp = () => {
           </Menu>
         </Sider>
         <Layout>
-          <Header style={{ height: '4.5rem', backgroundColor: '#fff', boxShadow: '0 0.1rem 0.4rem rgba(0,21,41,.08)' }}>
+          <Header style={{ height: '4.5rem', backgroundColor: '#fff', boxShadow: '0 0.1rem 0.4rem rgba(0,21,41,.08)', position: 'relative', zIndex:3}}>
             <Dropdown overlay={
               <Menu>
                 <Menu.Item key='logout'>
@@ -87,8 +87,14 @@ export const AuthenticatedApp = () => {
               </HeaderItem>
             </Dropdown>
           </Header>
-
-          <Content style={{ margin: '0.5rem', backgroundColor: '#fff' }}>
+          <PageHeader
+            style={{ backgroundColor: '#fff'}}
+            className="site-page-header"
+/*             onBack={() => null} */
+            title={pathname}
+            subTitle="This is a subtitle"
+          />
+          <Content style={{ margin: '2rem', backgroundColor: '#fff' }}>
             <Routes>
               <Route path='/class-management' element={<ClassManagementScreen />}></Route>
               <Route path='/calendar' element={<CalendarScreen />}></Route>
