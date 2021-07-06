@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react'
 import { ClassListScreen } from 'screens/classList'
 import { ClassManagementScreen } from 'screens/classManagement'
 import { CalendarScreen } from 'screens/calendar'
@@ -7,24 +7,30 @@ import styled from '@emotion/styled'
 import { Row } from 'components/lib'
 import { Link } from 'react-router-dom'
 import { Routes, Route } from 'react-router'
-import { BrowserRouter } from 'react-router-dom';
-
-import { Layout, Menu, Dropdown, PageHeader } from 'antd';
+import { BrowserRouter } from 'react-router-dom'
+import { Layout, Menu, Dropdown, PageHeader } from 'antd'
 import {
   MenuUnfoldOutlined,
   MenuFoldOutlined,
   UserOutlined,
   VideoCameraOutlined,
-  UploadOutlined,
-} from '@ant-design/icons';
-import { SmileOutlined, CrownOutlined, TabletOutlined, AntDesignOutlined } from '@ant-design/icons';
-import { } from 'react-router-dom';
+  UploadOutlined
+} from '@ant-design/icons'
+import {
+  SmileOutlined,
+  CrownOutlined,
+  TabletOutlined,
+  AntDesignOutlined
+} from '@ant-design/icons'
+import {} from 'react-router-dom'
 
-import type { ProSettings } from '@ant-design/pro-layout';
-import ProLayout, { PageContainer, SettingDrawer } from '@ant-design/pro-layout';
-import { TeacherManagementScreen } from 'screens/teacherManagement';
+import { ProSettings } from '@ant-design/pro-layout'
+import ProLayout, { PageContainer, SettingDrawer } from '@ant-design/pro-layout'
+import { TeacherManagementScreen } from 'screens/teacherManagement'
 
-const { Header, Sider, Content, Footer } = Layout;
+const { SubMenu } = Menu
+
+const { Header, Sider, Content, Footer } = Layout
 
 /* const content = (
   <Descriptions size="small" column={2}>
@@ -38,77 +44,100 @@ const { Header, Sider, Content, Footer } = Layout;
 ); */
 
 export const AuthenticatedApp = () => {
-  const [settings, setSetting] = useState<Partial<ProSettings> | undefined>({ fixSiderbar: true });
-  const [pathname, setPathname] = useState(window.location.pathname);
+  const [settings, setSetting] = useState<Partial<ProSettings> | undefined>({
+    fixSiderbar: true
+  })
+  const [pathname, setPathname] = useState(window.location.pathname)
   const { logout, user } = useAuth()
+
+  useEffect(() => {
+    setPathname(window.location.pathname)
+  }, [pathname])
 
   return (
     <Layout style={{ minHeight: '100vh' }}>
       <BrowserRouter>
-
         <Sider collapsible>
-          <div className="logo" style={{
-            height: '32px',
-            margin: '16px',
-            background: 'rgba(255, 255, 255, 0.3)'
-          }
-          } />
-          <Menu theme="dark" defaultSelectedKeys={['/1']} mode="inline">
-            <Menu.Item key="/class-management">
-              <Link to="/class-management">Class Management</Link>
+          <div
+            className='logo'
+            style={{
+              height: '32px',
+              margin: '16px',
+              background: 'rgba(255, 255, 255, 0.3)'
+            }}
+          />
+          <Menu theme='dark' defaultSelectedKeys={['/1']} mode='inline'>
+            <Menu.Item key='/my-classes'>
+              <Link to='/my-classes'>My Classes</Link>
             </Menu.Item>
-            <Menu.Item key="/my-classes">
-              <Link to="/my-classes">My Classes</Link>
+            <Menu.Item key='/calendar'>
+              <Link to='/calendar'>Calendar</Link>
             </Menu.Item>
-            <Menu.Item key="/calendar">
-              <Link to="/calendar">Calendar</Link>
+            <Menu.Item key='/courses'>
+              <Link to='/courses'>Courses</Link>
             </Menu.Item>
-            <Menu.Item key="/teacher-management">
-              <Link to="/teacher-management" >Teacher Management</Link>
-            </Menu.Item>
-            <Menu.Item key="9">
-              Files
-            </Menu.Item>
+            <SubMenu key='adminSub' title='Admin Pages'>
+              <Menu.Item key='/user-management'>
+                <Link to='/user-management'>User Management</Link>
+              </Menu.Item>
+              <Menu.Item key='/course-management'>
+                <Link to='/course-management'>Course Management</Link>
+              </Menu.Item>
+              <Menu.Item key='/class-management'>
+                <Link to='/class-management'>Class Management</Link>
+              </Menu.Item>
+              <Menu.Item key='/teacher-management'>
+                <Link to='/teacher-management'>Teacher Management</Link>
+              </Menu.Item>
+              <Menu.Item key='9'>Files</Menu.Item>
+            </SubMenu>
           </Menu>
         </Sider>
         <Layout>
-          <Header style={{ height: '4.5rem', backgroundColor: '#fff', boxShadow: '0 0.1rem 0.4rem rgba(0,21,41,.08)', position: 'relative', zIndex:3}}>
-            <Dropdown overlay={
-              <Menu>
-                <Menu.Item key='logout'>
-                  <a onClick={logout}>Logout</a>
-                </Menu.Item>
-              </Menu>
-            }
+          <Header
+            style={{
+              height: '4.5rem',
+              backgroundColor: '#fff',
+              boxShadow: '0 0.1rem 0.4rem rgba(0,21,41,.08)',
+              position: 'relative',
+              zIndex: 3
+            }}
+          >
+            <Dropdown
+              overlay={
+                <Menu>
+                  <Menu.Item key='logout'>
+                    <a onClick={logout}>Logout</a>
+                  </Menu.Item>
+                </Menu>
+              }
             >
               <HeaderItem onClick={e => e.preventDefault()}>
                 {console.log(user)}
-                  Hi, {user?.firstName}
+                Hi, {user?.firstName}
               </HeaderItem>
             </Dropdown>
           </Header>
-          <PageHeader
-            style={{ backgroundColor: '#fff'}}
-            className="site-page-header"
-/*             onBack={() => null} */
-            title={pathname}
-            subTitle="This is a subtitle"
-          />
-          <Content style={{ margin: '2rem', backgroundColor: '#fff' }}>
+
+          <Content style={{ backgroundColor: '#fff' }}>
             <Routes>
-              <Route path='/class-management' element={<ClassManagementScreen />}></Route>
               <Route path='/calendar' element={<CalendarScreen />}></Route>
               <Route path='/my-classes' element={<ClassListScreen />}></Route>
-              <Route path='/teacher-management' element={<TeacherManagementScreen />}></Route>
+              <Route
+                path='/class-management'
+                element={<ClassManagementScreen />}
+              ></Route>
+              <Route
+                path='/teacher-management'
+                element={<TeacherManagementScreen />}
+              ></Route>
             </Routes>
           </Content>
           <Footer style={{ textAlign: 'center', color: '#ccc' }}>©2021 </Footer>
         </Layout>
       </BrowserRouter>
-
-    </Layout >
-  );
-
+    </Layout>
+  )
 }
 
 const Container = styled.div`
@@ -126,7 +155,7 @@ z-index: 1;
 const HeaderLeft = styled(Row)``
 
 const HeaderRight = styled.div`
-float: right
+  float: right;
 `
 
 const HeaderItem = styled.a`
@@ -136,13 +165,13 @@ const HeaderItem = styled.a`
   height: 100%;
   padding: 0 12px;
   cursor: pointer;
-  transition: all .3s;
+  transition: all 0.3s;
   &:hover {
-        background: rgb(0,0,0,.025);
-      }
+    background: rgb(0, 0, 0, 0.025);
+  }
 `
 
 const Main = styled.main`
-display: grid;
-height: calc(100vh - 6rem);
+  display: grid;
+  height: calc(100vh - 6rem);
 `

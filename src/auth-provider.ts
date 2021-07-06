@@ -11,7 +11,7 @@ export const handleUserResponse = (user: User) => {
   return user
 }
 
-export const login = async (data: { email: string, password: string }) => {
+export const login = async (data: { email: string; password: string }) => {
   return await fetch(`${apiUrl}/auth`, {
     method: 'POST',
     headers: {
@@ -27,8 +27,7 @@ export const login = async (data: { email: string, password: string }) => {
   })
 }
 
-export const register = async (data:
-{
+export const register = async (data: {
   firstName: string
   lastName: string
   gender: string
@@ -51,4 +50,5 @@ export const register = async (data:
   })
 }
 
-export const logout = async () => window.localStorage.removeItem(localStorageKey)
+export const logout = async () =>
+  window.localStorage.removeItem(localStorageKey)

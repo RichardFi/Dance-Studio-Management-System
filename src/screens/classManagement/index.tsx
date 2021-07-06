@@ -4,14 +4,15 @@ import { Helmet } from 'react-helmet'
 import FullCalendar, { EventClickArg, DateSelectArg } from '@fullcalendar/react'
 import dayGridPlugin from '@fullcalendar/daygrid'
 import timeGridPlugin from '@fullcalendar/timegrid'
-import interactionPlugin from '@fullcalendar/interaction'; // for dateClick
+import interactionPlugin from '@fullcalendar/interaction' // for dateClick
 import { useHttp } from 'utils/http'
 import moment from 'moment'
-import { Form } from 'antd'
+import { Form, PageHeader } from 'antd'
 import { DanceClass } from 'screens/classList/list'
 import { ClassModal } from 'screens/classManagement/classModal'
 import { EventModal } from 'screens/classManagement/eventModal'
 import { useAuth } from 'context/auth-context'
+import { PageHeaderComponent } from 'components/pageHeader'
 
 export interface DanceClassCalendar {
   _id: string
@@ -30,17 +31,21 @@ export interface Course {
 }
 
 export const ClassManagementScreen = () => {
-  const [form] = Form.useForm();
+  const [form] = Form.useForm()
   const { logout, user } = useAuth()
 
-  const [event, setEvent] = useState([{
-    title: '',
-    start: ''
-  }])/*  */
-  const [course, setCourse] = useState([{
-    _id: '',
-    name: ''
-  }])/*  */
+  const [event, setEvent] = useState([
+    {
+      title: '',
+      start: ''
+    }
+  ]) /*  */
+  const [course, setCourse] = useState([
+    {
+      _id: '',
+      name: ''
+    }
+  ]) /*  */
 
   const [selectedClass, setSelectedClass] = useState('')
   const client = useHttp()
@@ -76,7 +81,7 @@ export const ClassManagementScreen = () => {
       startTime: moment(arg.event.start),
       endTime: moment(arg.event.end),
       teacher: arg.event.extendedProps.teacher,
-      description: arg.event.extendedProps.description,
+      description: arg.event.extendedProps.description
     })
     setEventVisible(true)
   }
@@ -87,12 +92,14 @@ export const ClassManagementScreen = () => {
       .then(values => {
         setConfirmEventLoading(true)
         console.log(values)
-        client(`classes/${selectedClass}`, { method: 'PATCH', data: values })
-          .then(res => {
-            setEventVisible(false)
-            setConfirmEventLoading(false)
-            form.resetFields()
-          })
+        client(`classes/${selectedClass}`, {
+          method: 'PATCH',
+          data: values
+        }).then(res => {
+          setEventVisible(false)
+          setConfirmEventLoading(false)
+          form.resetFields()
+        })
       })
       .catch(info => {
         console.log('Validate Failed:', info)
@@ -105,17 +112,16 @@ export const ClassManagementScreen = () => {
       .validateFields()
       .then(values => {
         setConfirmCreateLoading(true)
-        client('classes', { method: 'POST', data: values })
-          .then(res => {
-            setCreateVisible(false)
-            setConfirmCreateLoading(false)
-            form.resetFields()
-          })
+        client('classes', { method: 'POST', data: values }).then(res => {
+          setCreateVisible(false)
+          setConfirmCreateLoading(false)
+          form.resetFields()
+        })
       })
       .catch(info => {
         console.log('Validate Failed:', info)
         setConfirmCreateLoading(false)
-      });
+      })
   }
 
   const handleCreateCancel = () => {
@@ -128,7 +134,10 @@ export const ClassManagementScreen = () => {
 
   const onFinishJoinClass = () => {
     setConfirmEventLoading(true)
-    client(`classes/${selectedClass}`, { method: 'PATCH', data: { users: user?._id } })
+    client(`classes/${selectedClass}`, {
+      method: 'PATCH',
+      data: { users: user?._id }
+    })
       .then(res => {
         setEventVisible(false)
         setConfirmEventLoading(false)
@@ -144,39 +153,43 @@ export const ClassManagementScreen = () => {
   const formItemLayout = {
     labelCol: {
       xs: { span: 24 },
-      sm: { span: 8 },
+      sm: { span: 8 }
     },
     wrapperCol: {
       xs: { span: 24 },
-      sm: { span: 12 },
-    },
-  };
+      sm: { span: 12 }
+    }
+  }
 
   useEffect(() => {
-    client('classes').then(data =>
-      data.map((danceClass: DanceClass) => {
-        return {
-          _id: danceClass._id,
-          title: danceClass.name,
-          start: danceClass.startTime,
-          end: danceClass.endTime,
-          course: danceClass.course,
-          teacher: danceClass.teacher,
-          description: danceClass.description,
-          users: danceClass.users
-        }
-      })
-    ).then(setEvent)
+    client('classes')
+      .then(data =>
+        data.map((danceClass: DanceClass) => {
+          return {
+            _id: danceClass._id,
+            title: danceClass.name,
+            start: danceClass.startTime,
+            end: danceClass.endTime,
+            course: danceClass.course,
+            teacher: danceClass.teacher,
+            description: danceClass.description,
+            users: danceClass.users
+          }
+        })
+      )
+      .then(setEvent)
 
-    client('courses').then(data =>
-      data.map((course: Course) => {
-        return {
-          _id: course._id,
-          name: course.name,
-          teacher: course.teacher
-        }
-      })
-    ).then(setCourse)
+    client('courses')
+      .then(data =>
+        data.map((course: Course) => {
+          return {
+            _id: course._id,
+            name: course.name,
+            teacher: course.teacher
+          }
+        })
+      )
+      .then(setCourse)
   }, [confirmCreateLoading, confirmEventLoading])
 
   return (
@@ -184,6 +197,7 @@ export const ClassManagementScreen = () => {
       <Helmet>
         <title>Class Management - ZeroOne Admin</title>
       </Helmet>
+
       <EventModal
         eventVisible={eventVisible}
         handleEventOk={handleEventOk}
@@ -192,8 +206,7 @@ export const ClassManagementScreen = () => {
         form={form}
         formItemLayout={formItemLayout}
         course={course}
-      >
-      </EventModal>
+      ></EventModal>
 
       <ClassModal
         createVisible={createVisible}
@@ -231,5 +244,5 @@ export const ClassManagementScreen = () => {
 }
 
 const Container = styled.div`
-padding: 3.2rem;
+  padding: 3.2rem;
 `
