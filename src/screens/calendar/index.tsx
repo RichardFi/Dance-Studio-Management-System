@@ -11,7 +11,11 @@ import { DanceClass } from 'screens/classList/list'
 import { useAuth } from 'context/auth-context'
 import { PageHeaderComponent } from 'components/pageHeader'
 import moment from 'moment'
-import { UserOutlined, ProfileOutlined, PlaySquareOutlined } from '@ant-design/icons'
+import {
+  UserOutlined,
+  ProfileOutlined,
+  PlaySquareOutlined
+} from '@ant-design/icons'
 
 export interface DanceClassCalendar {
   _id: string
@@ -86,6 +90,13 @@ export const CalendarScreen = () => {
   }
 
   const handleOk = () => {
+    client(`users/${user?._id}/classes`, {
+      method: 'POST',
+      data: selectedClass
+    }).then(res => {
+      console.log(res)
+    })
+
     setIsModalVisible(false)
   }
 
@@ -162,6 +173,7 @@ export const CalendarScreen = () => {
           title='Class Detail'
           visible={isModalVisible}
           onOk={handleOk}
+          okText={'Join the class'}
           onCancel={handleCancel}
         >
           <h1 style={{ margin: 0 }}>{selectedClass.name}</h1>
@@ -180,8 +192,7 @@ export const CalendarScreen = () => {
               <PlaySquareOutlined /> Course:{' '}
               {course.find(course => course._id == selectedClass.course)?.name}
             </p>
-            <ProfileOutlined /> Description:{' '}
-            {selectedClass.description}
+            <ProfileOutlined /> Description: {selectedClass.description}
           </p>
         </Modal>
         <FullCalendar

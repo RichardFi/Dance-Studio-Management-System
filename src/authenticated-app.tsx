@@ -113,7 +113,7 @@ export const AuthenticatedApp = () => {
               }
             >
               <HeaderItem onClick={e => e.preventDefault()}>
-                {console.log(user)}
+                {console.log(user?._id)}
                 Hi, {user?.firstName}
               </HeaderItem>
             </Dropdown>
