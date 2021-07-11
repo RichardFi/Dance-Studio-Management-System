@@ -73,7 +73,6 @@ export const CalendarScreen = () => {
   })
 
   const showModal = (arg: EventClickArg) => {
-    console.log(arg.event)
     setSelectedClass({
       _id: arg.event.extendedProps._id,
       name: arg.event.title,

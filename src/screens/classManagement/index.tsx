@@ -92,7 +92,6 @@ export const ClassManagementScreen = () => {
       .validateFields()
       .then(values => {
         setConfirmEventLoading(true)
-        console.log(values)
         client(`classes/${selectedClass}`, {
           method: 'PATCH',
           data: values
