@@ -33,6 +33,7 @@ export interface Course {
 export const ClassManagementScreen = () => {
   const [form] = Form.useForm()
   const { logout, user } = useAuth()
+  const page = 'Class Management'
 
   const [event, setEvent] = useState([
     {
@@ -193,53 +194,57 @@ export const ClassManagementScreen = () => {
   }, [confirmCreateLoading, confirmEventLoading])
 
   return (
-    <Container>
-      <Helmet>
-        <title>Class Management - ZeroOne Admin</title>
-      </Helmet>
+    <div>
+      <PageHeaderComponent page={page} />
 
-      <EventModal
-        eventVisible={eventVisible}
-        handleEventOk={handleEventOk}
-        confirmEventLoading={confirmEventLoading}
-        handleEventCancel={handleEventCancel}
-        form={form}
-        formItemLayout={formItemLayout}
-        course={course}
-      ></EventModal>
+      <Container>
+        <Helmet>
+          <title>Class Management - ZeroOne Admin</title>
+        </Helmet>
 
-      <ClassModal
-        createVisible={createVisible}
-        handleCreateOk={handleCreateOk}
-        confirmCreateLoading={confirmCreateLoading}
-        handleCreateCancel={handleCreateCancel}
-        form={form}
-        formItemLayout={formItemLayout}
-        course={course}
-      />
-      <FullCalendar
-        plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
-        headerToolbar={{
-          left: '',
-          center: 'title',
-          right: 'dayGridMonth,timeGridWeek,timeGridDay prev,next today'
-        }}
-        expandRows={true}
-        height={'auto'}
-        events={event}
-        selectable={true}
-        select={showCreateModal}
-        eventClick={showEventModal}
-        slotMinTime={'06:00:00'}
-        slotMaxTime={'21:00:00'}
-        eventTimeFormat={{
-          hour: 'numeric',
-          minute: '2-digit',
-          meridiem: false
-        }}
-        displayEventEnd={true}
-      />
-    </Container>
+        <EventModal
+          eventVisible={eventVisible}
+          handleEventOk={handleEventOk}
+          confirmEventLoading={confirmEventLoading}
+          handleEventCancel={handleEventCancel}
+          form={form}
+          formItemLayout={formItemLayout}
+          course={course}
+        ></EventModal>
+
+        <ClassModal
+          createVisible={createVisible}
+          handleCreateOk={handleCreateOk}
+          confirmCreateLoading={confirmCreateLoading}
+          handleCreateCancel={handleCreateCancel}
+          form={form}
+          formItemLayout={formItemLayout}
+          course={course}
+        />
+        <FullCalendar
+          plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
+          headerToolbar={{
+            left: '',
+            center: 'title',
+            right: 'dayGridMonth,timeGridWeek,timeGridDay prev,next today'
+          }}
+          expandRows={true}
+          height={'auto'}
+          events={event}
+          selectable={true}
+          select={showCreateModal}
+          eventClick={showEventModal}
+          slotMinTime={'06:00:00'}
+          slotMaxTime={'21:00:00'}
+          eventTimeFormat={{
+            hour: 'numeric',
+            minute: '2-digit',
+            meridiem: false
+          }}
+          displayEventEnd={true}
+        />
+      </Container>
+    </div>
   )
 }
 
