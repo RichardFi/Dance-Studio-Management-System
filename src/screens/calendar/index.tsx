@@ -6,7 +6,7 @@ import dayGridPlugin from '@fullcalendar/daygrid'
 import timeGridPlugin from '@fullcalendar/timegrid'
 import interactionPlugin from '@fullcalendar/interaction' // for dateClick
 import { useHttp } from 'utils/http'
-import { Modal, Form } from 'antd'
+import { Modal, Form, Alert } from 'antd'
 import { DanceClass } from 'screens/classList/list'
 import { useAuth } from 'context/auth-context'
 import { PageHeaderComponent } from 'components/pageHeader'
@@ -65,6 +65,7 @@ export const CalendarScreen = () => {
   ]) /*  */
 
   const [isModalVisible, setIsModalVisible] = useState(false)
+  const [isJoinedClass, setIsJoinedClass] = useState(false)
 
   const [selectedClass, setSelectedClass] = useState({
     _id: '',
@@ -86,6 +87,12 @@ export const CalendarScreen = () => {
       description: arg.event.extendedProps.description,
       teacher: arg.event.extendedProps.teacher
     })
+
+    setIsJoinedClass(
+      user?.classes.includes(arg.event.extendedProps._id) || false
+    )
+
+    console.log(selectedClass)
     setIsModalVisible(true)
   }
 
@@ -93,11 +100,11 @@ export const CalendarScreen = () => {
     client(`users/${user?._id}/classes`, {
       method: 'POST',
       data: selectedClass
-    }).then(res => {
-      console.log(res)
     })
-
-    setIsModalVisible(false)
+      .then(res => setIsModalVisible(false))
+      .catch(info => {
+        alert(info.message)
+      })
   }
 
   const handleCancel = () => {
@@ -160,7 +167,7 @@ export const CalendarScreen = () => {
         })
       )
       .then(setTeacher)
-  }, [])
+  }, [selectedClass])
 
   return (
     <div>
@@ -173,8 +180,9 @@ export const CalendarScreen = () => {
           title='Class Detail'
           visible={isModalVisible}
           onOk={handleOk}
-          okText={'Join the class'}
+          okText={isJoinedClass ? 'Drop the class' : 'Join the class'}
           onCancel={handleCancel}
+          okButtonProps={{ disabled: isJoinedClass }}
         >
           <h1 style={{ margin: 0 }}>{selectedClass.name}</h1>
           <p style={{ marginBottom: '2rem', color: 'rgb(0,0,0,0.6)' }}>
@@ -188,12 +196,15 @@ export const CalendarScreen = () => {
             <UserOutlined /> Teacher: {selectedClass.teacher}
           </p>
           <p>
-            <p>
-              <PlaySquareOutlined /> Course:{' '}
-              {course.find(course => course._id == selectedClass.course)?.name}
-            </p>
+            <PlaySquareOutlined /> Course:{' '}
+            {course.find(course => course._id == selectedClass.course)?.name}
+          </p>
+          <p>
             <ProfileOutlined /> Description: {selectedClass.description}
           </p>
+          {isJoinedClass ? (
+            <Alert message='You joined this class' type='success' />
+          ) : null}
         </Modal>
         <FullCalendar
           plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
