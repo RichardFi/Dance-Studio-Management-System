@@ -97,28 +97,34 @@ export const CalendarScreen = () => {
   }
 
   const handleOk = () => {
-    if (!isJoinedClass) {
-      client(`users/${user?._id}/classes`, {
-        method: 'POST',
-        data: selectedClass
-      })
-        .then(res => setIsModalVisible(false))
-        .then(res => window.location.reload())
-        .catch(info => {
-          alert(info)
-        })
-    } else {
-      client(`users/${user?._id}/classes`, {
-        method: 'DELETE',
-        data: selectedClass
-      })
-        .then(res => setIsModalVisible(false))
-        .then(res => window.location.reload())
-        .catch(info => {
-          console.log(info)
-          alert(info)
-        })
-    }
+    Modal.confirm({
+      title: isJoinedClass? 'Do you want to drop this class?' :'Do you want to join this class?',
+      onOk () {
+        if (!isJoinedClass) {
+          client(`users/${user?._id}/classes`, {
+            method: 'POST',
+            data: selectedClass
+          })
+            .then(res => setIsModalVisible(false))
+            .then(res => window.location.reload())
+            .catch(info => {
+              alert(info)
+            })
+        } else {
+          client(`users/${user?._id}/classes`, {
+            method: 'DELETE',
+            data: selectedClass
+          })
+            .then(res => setIsModalVisible(false))
+            .then(res => window.location.reload())
+            .catch(info => {
+              console.log(info)
+              alert(info)
+            })
+        }
+      },
+
+    })
   }
 
   const handleCancel = () => {

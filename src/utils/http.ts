@@ -31,8 +31,9 @@ export const http = async (endpoint: string, { data, token, headers, ...customCo
         window.location.reload()
         return await Promise.reject(response.json())
       }
+      // status 204 can not contain message body
       else if (response.status === 204) {
-        return response
+        return
       }
       const data = await response.json()
 
