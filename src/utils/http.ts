@@ -31,7 +31,11 @@ export const http = async (endpoint: string, { data, token, headers, ...customCo
         window.location.reload()
         return await Promise.reject(response.json())
       }
+      else if (response.status === 204) {
+        return response
+      }
       const data = await response.json()
+
       if (response.ok) {
         return data
       } else {

@@ -93,20 +93,32 @@ export const CalendarScreen = () => {
       user?.classes.includes(arg.event.extendedProps._id) || false
     )
 
-    console.log(selectedClass)
     setIsModalVisible(true)
   }
 
   const handleOk = () => {
-    client(`users/${user?._id}/classes`, {
-      method: 'POST',
-      data: selectedClass
-    })
-      .then(res => setIsModalVisible(false))
-      .then(res => window.location.reload())
-      .catch(info => {
-        alert(info.message)
+    if (!isJoinedClass) {
+      client(`users/${user?._id}/classes`, {
+        method: 'POST',
+        data: selectedClass
       })
+        .then(res => setIsModalVisible(false))
+        .then(res => window.location.reload())
+        .catch(info => {
+          alert(info)
+        })
+    } else {
+      client(`users/${user?._id}/classes`, {
+        method: 'DELETE',
+        data: selectedClass
+      })
+        .then(res => setIsModalVisible(false))
+        .then(res => window.location.reload())
+        .catch(info => {
+          console.log(info)
+          alert(info)
+        })
+    }
   }
 
   const handleCancel = () => {
@@ -184,7 +196,7 @@ export const CalendarScreen = () => {
           onOk={handleOk}
           okText={isJoinedClass ? 'Drop the class' : 'Join the class'}
           onCancel={handleCancel}
-          okButtonProps={{ disabled: isJoinedClass }}
+          /* okButtonProps={{ disabled: isJoinedClass }} */
         >
           <h1 style={{ margin: 0 }}>{selectedClass.name}</h1>
           <p style={{ marginBottom: '2rem', color: 'rgb(0,0,0,0.6)' }}>
