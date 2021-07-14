@@ -43,6 +43,7 @@ export interface Teacher {
 export const CalendarScreen = () => {
   const [form] = Form.useForm()
   const { logout, user } = useAuth()
+
   const page = 'Calendar'
 
   const [event, setEvent] = useState([
@@ -102,6 +103,7 @@ export const CalendarScreen = () => {
       data: selectedClass
     })
       .then(res => setIsModalVisible(false))
+      .then(res => window.location.reload())
       .catch(info => {
         alert(info.message)
       })

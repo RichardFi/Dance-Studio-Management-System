@@ -33,19 +33,31 @@ interface Register {
   password: string
 }
 
-const AuthContext = React.createContext<{
-  user: User | null
-  register: (form: Register) => Promise<void>
-  login: (form: AuthForm) => Promise<void>
-  logout: () => Promise<void>
-} | undefined>(undefined)
+const AuthContext = React.createContext<
+  | {
+      user: User | null
+      register: (form: Register) => Promise<void>
+      login: (form: AuthForm) => Promise<void>
+      logout: () => Promise<void>
+    }
+  | undefined
+>(undefined)
 
 AuthContext.displayName = 'AuthContext'
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
-  const { data: user, error, isLoading, isIdle, isError, run, setData: setUser } = useAsync<User | null>()
+  const {
+    data: user,
+    error,
+    isLoading,
+    isIdle,
+    isError,
+    run,
+    setData: setUser
+  } = useAsync<User | null>()
   const login = async (form: AuthForm) => await auth.login(form).then(setUser)
-  const register = async (form: Register) => await auth.register(form).then(setUser)
+  const register = async (form: Register) =>
+    await auth.register(form).then(setUser)
   const logout = async () => await auth.logout().then(() => setUser(null))
   useMount(() => {
     run(bootstrapUser())
@@ -58,7 +70,12 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   if (isError) {
     return <FullPageErrorFallback error={error} />
   }
-  return <AuthContext.Provider children={children} value={{ user, login, register, logout }} />
+  return (
+    <AuthContext.Provider
+      children={children}
+      value={{ user, login, register, logout }}
+    />
+  )
 }
 
 export const useAuth = () => {
