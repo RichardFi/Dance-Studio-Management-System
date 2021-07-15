@@ -118,7 +118,6 @@ export const CalendarScreen = () => {
             .then(res => setIsModalVisible(false))
             .then(res => window.location.reload())
             .catch(info => {
-              console.log(info)
               alert(info)
             })
         }
