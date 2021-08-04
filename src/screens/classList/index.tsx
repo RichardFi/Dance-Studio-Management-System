@@ -17,8 +17,10 @@ import { Helmet } from 'react-helmet'
 
 export const ClassListScreen = () => {
   const [param, setParam] = useState({
-    _id: '',
-    name: ''
+    name: '',
+    startTime:'',
+    teacher:'',
+    course:'',
   }) /*  */
 
   const debouncedParam = useDebounce(param, 200)
@@ -31,7 +33,7 @@ export const ClassListScreen = () => {
   useEffect(() => {
     client('users').then(setUsers)
     client('courses').then(setCourses)
-  }, [param])
+  }, [])
 
   return (
     <div>
@@ -41,7 +43,7 @@ export const ClassListScreen = () => {
         </Helmet>
         <Title>Class List</Title>
         <Content>
-          <SearchPanel users={users} param={param} setParam={setParam} />
+          <SearchPanel users={users} courses={courses} param={param} setParam={setParam} />
           {error != null ? (
             <Typography.Text type='danger'>{error.message}</Typography.Text>
           ) : null}
@@ -50,6 +52,7 @@ export const ClassListScreen = () => {
             loading={isLoading}
             users={users}
             courses={courses}
+            param={param}
             dataSource={list || []}
           />
         </Content>
