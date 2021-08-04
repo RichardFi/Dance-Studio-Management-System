@@ -1,9 +1,9 @@
 import React from 'react'
 import { User } from 'screens/classList/searchPanel'
+import { Course } from 'screens/calendar'
 import { Table, TableProps } from 'antd'
 import dayjs from 'dayjs'
 import { Link, BrowserRouter as Router } from 'react-router-dom'
-
 export interface DanceClass {
   _id: string
   users: [string]
@@ -18,17 +18,30 @@ export interface DanceClass {
 interface ListProps extends TableProps<DanceClass> {
   //list: DanceClass[],
   users: User[]
+  courses: Course[]
 }
 
-export const List = ({ users, ...props }: ListProps) => {
+export const List = ({ users, courses, ...props }: ListProps) => {
   return (
     <Table
-      rowKey='id' pagination={false} columns={[
+      rowKey='id'
+      columns={[
         {
           title: 'Class Name',
           dataIndex: 'name',
           render (value, danceClass) {
             return <Link to={danceClass._id}>{danceClass.name}</Link>
+          }
+        },
+        {
+          title: 'Course',
+          dataIndex: 'name',
+          render (value, danceClass) {
+            return (
+              <span>
+                {courses.find(course => danceClass.course === course._id)?.name}
+              </span>
+            )
           }
         },
         {
@@ -44,8 +57,9 @@ export const List = ({ users, ...props }: ListProps) => {
         {
           title: 'End Time',
           dataIndex: 'endTime'
-        },
-      ]} {...props}
+        }
+      ]}
+      {...props}
     />
   )
 }

@@ -19,16 +19,18 @@ export const ClassListScreen = () => {
   const [param, setParam] = useState({
     _id: '',
     name: ''
-  })/*  */
+  }) /*  */
 
   const debouncedParam = useDebounce(param, 200)
   const [users, setUsers] = useState([])
+  const [courses, setCourses] = useState([])
   // const [list, setList] = useState([]);
   const client = useHttp()
   const { isLoading, error, data: list } = useDanceClass(debouncedParam)
 
   useEffect(() => {
     client('users').then(setUsers)
+    client('courses').then(setCourses)
   }, [param])
 
   return (
@@ -37,16 +39,35 @@ export const ClassListScreen = () => {
         <Helmet>
           <title>Class List - ZeroOne</title>
         </Helmet>
-        <h1>Class List</h1>
-        <SearchPanel users={users} param={param} setParam={setParam} />
-        {(error != null) ? <Typography.Text type='danger'>{error.message}</Typography.Text> : null}
+        <Title>Class List</Title>
+        <Content>
+          <SearchPanel users={users} param={param} setParam={setParam} />
+          {error != null ? (
+            <Typography.Text type='danger'>{error.message}</Typography.Text>
+          ) : null}
 
-        <List loading={isLoading} users={users} dataSource={list || []} />
+          <List
+            loading={isLoading}
+            users={users}
+            courses={courses}
+            dataSource={list || []}
+          />
+        </Content>
       </Container>
     </div>
   )
 }
 
 const Container = styled.div`
-padding: 3.2rem;
+  display: flex;
+  flex-direction: column;
+  background-color: #f0f2f5;
+`
+const Title = styled.h2`
+  padding: 2rem;
+  margin: 0;
+  background-color: #ffffff;
+`
+const Content = styled.div`
+  margin: 3rem;
 `
