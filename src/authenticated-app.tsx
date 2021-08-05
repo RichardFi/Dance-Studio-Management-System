@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { ClassListScreen } from 'screens/classList'
 import { ClassManagementScreen } from 'screens/classManagement'
 import { CalendarScreen } from 'screens/calendar'
+import { TeachersScreen } from 'screens/teachers'
 import { useAuth } from 'context/auth-context'
 import styled from '@emotion/styled'
 import { Row } from 'components/lib'
@@ -16,12 +17,7 @@ import {
   VideoCameraOutlined,
   UploadOutlined
 } from '@ant-design/icons'
-import {
-  SmileOutlined,
-  CrownOutlined,
-  TabletOutlined,
-  AntDesignOutlined
-} from '@ant-design/icons'
+
 import {} from 'react-router-dom'
 
 import { ProSettings } from '@ant-design/pro-layout'
@@ -76,6 +72,9 @@ export const AuthenticatedApp = () => {
             <Menu.Item key='/courses'>
               <Link to='/courses'>Courses</Link>
             </Menu.Item>
+            <Menu.Item key='/teachers'>
+              <Link to='/teachers'>Teachers</Link>
+            </Menu.Item>
             <SubMenu key='adminSub' title='Admin Pages'>
               <Menu.Item key='/user-management'>
                 <Link to='/user-management'>User Management</Link>
@@ -123,6 +122,7 @@ export const AuthenticatedApp = () => {
             <Routes>
               <Route path='/calendar' element={<CalendarScreen />}></Route>
               <Route path='/my-classes' element={<ClassListScreen />}></Route>
+              <Route path='/teachers' element={<TeachersScreen />}></Route>
               <Route
                 path='/class-management'
                 element={<ClassManagementScreen />}
