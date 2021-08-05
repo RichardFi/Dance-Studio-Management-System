@@ -2,14 +2,13 @@
 import { SearchPanel } from './searchPanel'
 import { List } from './list'
 import { useState, useEffect } from 'react'
-import { cleanObject, useDebounce } from '../../utils'
+import { useDebounce } from '../../utils'
 import { useHttp } from 'utils/http'
 import styled from '@emotion/styled'
-import { useAsync } from 'utils/useAsync'
-import { DanceClass } from 'screens/classList/list'
 import { Typography } from 'antd'
 import { useDanceClass } from 'utils/danceClass'
 import { Helmet } from 'react-helmet'
+import { FundProjectionScreenOutlined } from '@ant-design/icons';
 
 // import * as qs from "qs";
 
@@ -41,7 +40,7 @@ export const ClassListScreen = () => {
         <Helmet>
           <title>Class List - ZeroOne</title>
         </Helmet>
-        <Title>Class List</Title>
+        <Title><FundProjectionScreenOutlined /> Class List </Title> 
         <Content>
           <SearchPanel users={users} courses={courses} param={param} setParam={setParam} />
           {error != null ? (
@@ -67,6 +66,7 @@ const Container = styled.div`
   background-color: #f0f2f5;
 `
 const Title = styled.h2`
+  font-size: 2.5rem;
   padding: 2rem;
   margin: 0;
   background-color: #ffffff;
